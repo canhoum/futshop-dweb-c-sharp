@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace futshop_dweb.Models
 {
-    public class transacao
+    public class Transacao
     {
         [Key]
         public int CompraId { get; set; }
@@ -12,7 +12,7 @@ namespace futshop_dweb.Models
 
         [ForeignKey (nameof(UtilizadorId))]
         public int UtilizadorFK { get; set; }
-        public utilizador UtilizadorId { get; set; }
-        public ICollection<carrinho> ItensCarrinho { get; set; }
+        public Utilizador UtilizadorId { get; set; }
+        public ICollection<Carrinho> ItensCarrinho { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace futshop_dweb.Models
 {
-    public class carrinho
+    public class Carrinho
     {
         [Key]  
         public int CarrinhoId { get; set; }
@@ -10,7 +10,7 @@ namespace futshop_dweb.Models
         public int ProdutoId { get; set; }
         public int Quantidade { get; set; }
         public decimal PrecoUnitario { get; set; }
-        public transacao Compra { get; set; }
+        public Transacao Compra { get; set; }
         public Artigos artigo { get; set; }
     }
 }

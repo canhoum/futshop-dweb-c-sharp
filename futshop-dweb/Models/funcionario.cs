@@ -1,6 +1,6 @@
 ﻿namespace futshop_dweb.Models
 {
-    public class funcionario
+    public class Funcionario
     {
     }
 }
