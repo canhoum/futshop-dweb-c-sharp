@@ -9,6 +9,6 @@ namespace futshop_dweb.Models
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
-        public ICollectionTransacao> Transacao { get; set; }
+        public ICollection<Transacao> Transacao { get; set; }
     }
 }
