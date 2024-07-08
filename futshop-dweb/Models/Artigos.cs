@@ -7,12 +7,6 @@ namespace DW_Final_Project.Models
 {
     public class Artigos
     {
-        public Artigos()
-        {
-            OrderItemList = new HashSet<OrderItem>();
-            CategoryList = new HashSet<Categoria>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -46,11 +40,16 @@ namespace DW_Final_Project.Models
         public string? ImagemURL { get; set; }
 
         [ForeignKey(nameof(Categoria))]
-        public int CategoriaId { get; set; }
+        public int CategoriaFK { get; set; }
         public Categoria Categoria { get; set; }
 
-        public ICollection<OrderItem> OrderItemList { get; set; }
+        [ForeignKey(nameof(Transacao))]
+        public int TransacaoFK { get; set; }
+        public Transacao Transacao { get; set; }
 
-        public ICollection<Categoria> CategoryList { get; set; }
+        [ForeignKey(nameof(Carrinho))]
+        public int CarrinhoFK { get; set; }
+        public Carrinho Carrinho { get; set; }
+
     }
 }

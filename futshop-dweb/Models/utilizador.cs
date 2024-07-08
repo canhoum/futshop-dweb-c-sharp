@@ -6,6 +6,11 @@ namespace futshop_dweb.Models
 {
     public class Utilizador
     {
+        public Utilizador()
+    {
+        Transacao = new HashSet<Transacao>();
+    }
+    
         /// <summary>
         /// Chave Primária (PK)
         /// </summary>
@@ -54,7 +59,7 @@ namespace futshop_dweb.Models
         [NotMapped]
         public string DataNascFormatted => DataNascimento.ToString("dd/MM/yyyy");
 
-        // Relação um-para-muitps com Transacao
+        // Relação um-para-muitos com Transacao
         public ICollection<Transacao> Transacao { get; set; }
 
         // Relação um-para-um com Carrinho

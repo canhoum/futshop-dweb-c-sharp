@@ -6,8 +6,15 @@ namespace futshop_dweb.Models
 {
     public class Categoria
     {
-        [Key] public int Id { get; set; }
+        public Categoria()
+        {
+            Artigos = new HashSet<Artigos>();
+        }
+        [Key] 
+        public int Id { get; set; }
 
+        [Required]
+        [Display(Name = "Nome da Categoria")]
         public string Nome { get; set; }
 
         // Relação um-para-muitos com Artigos

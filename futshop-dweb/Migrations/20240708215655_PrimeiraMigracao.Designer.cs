@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using futshop_dweb.Data;
 
 #nullable disable
 
-namespace futshop_dweb.Data.Migrations
+namespace futshop_dweb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240708215655_PrimeiraMigracao")]
+    partial class PrimeiraMigracao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,89 @@ namespace futshop_dweb.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("DW_Final_Project.Models.Artigos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarrinhoFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoriaFK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagemURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tamanho")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TransacaoFK")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarrinhoFK");
+
+                    b.HasIndex("CategoriaFK");
+
+                    b.HasIndex("TransacaoFK");
+
+                    b.ToTable("Artigos");
+                });
+
+            modelBuilder.Entity("DW_Final_Project.Models.Carrinho", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("UtilizadorFK")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UtilizadorFK")
+                        .IsUnique();
+
+                    b.ToTable("carrinho");
+                });
+
+            modelBuilder.Entity("DW_Final_Project.Models.CarrinhoArtigo", b =>
+                {
+                    b.Property<int>("CarrinhoFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArtigoFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarrinhoFK", "ArtigoFK");
+
+                    b.HasIndex("ArtigoFK");
+
+                    b.ToTable("CarrinhoArtigo");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -224,6 +310,150 @@ namespace futshop_dweb.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("futshop_dweb.Models.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categoria");
+                });
+
+            modelBuilder.Entity("futshop_dweb.Models.Transacao", b =>
+                {
+                    b.Property<int>("CompraId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompraId"));
+
+                    b.Property<DateTime>("DataCompra")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UtilizadorFK")
+                        .HasColumnType("int");
+
+                    b.HasKey("CompraId");
+
+                    b.HasIndex("UtilizadorFK");
+
+                    b.ToTable("Transacao");
+                });
+
+            modelBuilder.Entity("futshop_dweb.Models.Utilizador", b =>
+                {
+                    b.Property<int>("UtilizadorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UtilizadorId"));
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("DataNascimento")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Pais")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telemovel")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
+
+                    b.Property<string>("codigopostal")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("morada")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UtilizadorId");
+
+                    b.ToTable("Utilizadores");
+                });
+
+            modelBuilder.Entity("DW_Final_Project.Models.Artigos", b =>
+                {
+                    b.HasOne("DW_Final_Project.Models.Carrinho", "Carrinho")
+                        .WithMany()
+                        .HasForeignKey("CarrinhoFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("futshop_dweb.Models.Categoria", "Categoria")
+                        .WithMany("Artigos")
+                        .HasForeignKey("CategoriaFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("futshop_dweb.Models.Transacao", "Transacao")
+                        .WithMany("ArtigosList")
+                        .HasForeignKey("TransacaoFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Carrinho");
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Transacao");
+                });
+
+            modelBuilder.Entity("DW_Final_Project.Models.Carrinho", b =>
+                {
+                    b.HasOne("futshop_dweb.Models.Utilizador", "Utilizador")
+                        .WithOne("Carrinho")
+                        .HasForeignKey("DW_Final_Project.Models.Carrinho", "UtilizadorFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Utilizador");
+                });
+
+            modelBuilder.Entity("DW_Final_Project.Models.CarrinhoArtigo", b =>
+                {
+                    b.HasOne("DW_Final_Project.Models.Artigos", "Artigos")
+                        .WithMany()
+                        .HasForeignKey("ArtigoFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DW_Final_Project.Models.Carrinho", "Carrinho")
+                        .WithMany("Artigos")
+                        .HasForeignKey("CarrinhoFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Artigos");
+
+                    b.Navigation("Carrinho");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -273,6 +503,40 @@ namespace futshop_dweb.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("futshop_dweb.Models.Transacao", b =>
+                {
+                    b.HasOne("futshop_dweb.Models.Utilizador", "Utilizador")
+                        .WithMany("Transacao")
+                        .HasForeignKey("UtilizadorFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Utilizador");
+                });
+
+            modelBuilder.Entity("DW_Final_Project.Models.Carrinho", b =>
+                {
+                    b.Navigation("Artigos");
+                });
+
+            modelBuilder.Entity("futshop_dweb.Models.Categoria", b =>
+                {
+                    b.Navigation("Artigos");
+                });
+
+            modelBuilder.Entity("futshop_dweb.Models.Transacao", b =>
+                {
+                    b.Navigation("ArtigosList");
+                });
+
+            modelBuilder.Entity("futshop_dweb.Models.Utilizador", b =>
+                {
+                    b.Navigation("Carrinho")
+                        .IsRequired();
+
+                    b.Navigation("Transacao");
                 });
 #pragma warning restore 612, 618
         }

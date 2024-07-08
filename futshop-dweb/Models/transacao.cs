@@ -6,14 +6,19 @@ namespace futshop_dweb.Models
 {
     public class Transacao
     {
+        public Transacao()
+        {
+        ArtigosList= new HashSet<Artigos>();
+    }
+    
         [Key]
         public int CompraId { get; set; }
         public DateTime DataCompra { get; set; }
         public decimal Total { get; set; }
 
-        [ForeignKey (nameof(UtilizadorId))]
+        [ForeignKey (nameof(Utilizador))]
         public int UtilizadorFK { get; set; }
-        public Utilizador UtilizadorId { get; set; }
-        public ICollection<Carrinho> ItensCarrinho { get; set; }
+        public Utilizador Utilizador { get; set; }
+        public ICollection<Artigos> ArtigosList { get; set; }
     }
 }
