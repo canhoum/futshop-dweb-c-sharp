@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DW_Final_Project.Models;
 using futshop_dweb.Data;
+using DW_Final_Project.Models;
 
 namespace futshop_dweb.Controllers
 {
@@ -22,7 +24,7 @@ namespace futshop_dweb.Controllers
         // GET: Artigos
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Artigos.Include(a => a.Carrinho).Include(a => a.Categoria).Include(a => a.Transacao);
+            var applicationDbContext = _context.Artigos.Include(a => a.Categoria);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,9 +37,7 @@ namespace futshop_dweb.Controllers
             }
 
             var artigos = await _context.Artigos
-                .Include(a => a.Carrinho)
                 .Include(a => a.Categoria)
-                .Include(a => a.Transacao)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (artigos == null)
             {
@@ -50,28 +50,55 @@ namespace futshop_dweb.Controllers
         // GET: Artigos/Create
         public IActionResult Create()
         {
-            ViewData["CarrinhoFK"] = new SelectList(_context.carrinho, "Id", "Id");
             ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome");
-            ViewData["TransacaoFK"] = new SelectList(_context.Transacao, "CompraId", "CompraId");
             return View();
         }
 
         // POST: Artigos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Descricao,Tamanho,Quantidade,ImagemURL,CategoriaFK,TransacaoFK,CarrinhoFK")] Artigos artigos)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Descricao,Tamanho,Quantidade,PrecoAux,CategoriaFK")] Artigos artigos, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
+                if (!string.IsNullOrEmpty(artigos.PrecoAux))
+                {
+                    if (decimal.TryParse(artigos.PrecoAux, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal preco))
+                    {
+                        // Se necessário, armazene o valor do preço em um campo apropriado
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "O preço do artigo é inválido.");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Deve escolher o preço do artigo, por favor.");
+                }
+
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fileStream);
+                    }
+
+                    artigos.ImagemURL = fileName;
+                }
+                else
+                {
+                    artigos.ImagemURL = "default-c.png";
+                }
+
                 _context.Add(artigos);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarrinhoFK"] = new SelectList(_context.carrinho, "Id", "Id", artigos.CarrinhoFK);
             ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
-            ViewData["TransacaoFK"] = new SelectList(_context.Transacao, "CompraId", "CompraId", artigos.TransacaoFK);
             return View(artigos);
         }
 
@@ -88,18 +115,16 @@ namespace futshop_dweb.Controllers
             {
                 return NotFound();
             }
-            ViewData["CarrinhoFK"] = new SelectList(_context.carrinho, "Id", "Id", artigos.CarrinhoFK);
+
+            artigos.PrecoAux = artigos.PrecoAux.ToString(CultureInfo.InvariantCulture);
             ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
-            ViewData["TransacaoFK"] = new SelectList(_context.Transacao, "CompraId", "CompraId", artigos.TransacaoFK);
             return View(artigos);
         }
 
         // POST: Artigos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao,Tamanho,Quantidade,ImagemURL,CategoriaFK,TransacaoFK,CarrinhoFK")] Artigos artigos)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao,Tamanho,Quantidade,PrecoAux,CategoriaFK")] Artigos artigos, IFormFile imageFile)
         {
             if (id != artigos.Id)
             {
@@ -108,9 +133,44 @@ namespace futshop_dweb.Controllers
 
             if (ModelState.IsValid)
             {
+                var existingArtigo = await _context.Artigos.FindAsync(id);
+                existingArtigo.Nome = artigos.Nome;
+                existingArtigo.Descricao = artigos.Descricao;
+                existingArtigo.Tamanho = artigos.Tamanho;
+                existingArtigo.Quantidade = artigos.Quantidade;
+
+                if (!string.IsNullOrEmpty(artigos.PrecoAux))
+                {
+                    if (decimal.TryParse(artigos.PrecoAux, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal preco))
+                    {
+                        // Se necessário, armazene o valor do preço em um campo apropriado
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "O preço do artigo é inválido.");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Deve escolher o preço do artigo, por favor.");
+                }
+
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fileStream);
+                    }
+
+                    existingArtigo.ImagemURL = fileName;
+                }
+
                 try
                 {
-                    _context.Update(artigos);
+                    _context.Update(existingArtigo);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -126,9 +186,7 @@ namespace futshop_dweb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarrinhoFK"] = new SelectList(_context.carrinho, "Id", "Id", artigos.CarrinhoFK);
             ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
-            ViewData["TransacaoFK"] = new SelectList(_context.Transacao, "CompraId", "CompraId", artigos.TransacaoFK);
             return View(artigos);
         }
 
@@ -141,9 +199,7 @@ namespace futshop_dweb.Controllers
             }
 
             var artigos = await _context.Artigos
-                .Include(a => a.Carrinho)
                 .Include(a => a.Categoria)
-                .Include(a => a.Transacao)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (artigos == null)
             {
