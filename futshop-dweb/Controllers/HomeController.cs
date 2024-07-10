@@ -1,3 +1,4 @@
+using futshop_dweb.Data;
 using futshop_dweb.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -8,13 +9,17 @@ namespace futshop_dweb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IUserService _userService;
+
+        public HomeController(ILogger<HomeController> logger, IUserService userService)
         {
             _logger = logger;
+            _userService = userService;
         }
 
         public IActionResult Index()
         {
+            bool isAuthenticated = _userService.IsAuthenticated;
             return View();
         }
 

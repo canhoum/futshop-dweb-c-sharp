@@ -55,6 +55,14 @@ namespace futshop_dweb.Models
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório.")]
         [Display(Name = "País")]
         public string Pais { get; set; }
+        
+        [Required]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+
+        [Display(Name = "Remember Me")]
+        public bool RememberMe { get; set; }
 
         [NotMapped]
         public string DataNascFormatted => DataNascimento.ToString("dd/MM/yyyy");
