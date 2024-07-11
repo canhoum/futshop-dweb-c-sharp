@@ -10,8 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @using (Html.BeginForm("Edit", "Artigos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
@@ -34,29 +34,23 @@
                 <span asp-validation-for="Quantidade" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="PrecoAux" class="control-label"></label>
+                <input asp-for="PrecoAux" class="form-control" />
+                <span asp-validation-for="PrecoAux" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="ImagemURL" class="control-label"></label>
-                <input asp-for="ImagemURL" class="form-control" />
+                <input class="form-control" type="file" name="imageFile" />
                 <span asp-validation-for="ImagemURL" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CategoriaFK" class="control-label"></label>
                 <select asp-for="CategoriaFK" class="form-control" asp-items="ViewBag.CategoriaFK"></select>
-                <span asp-validation-for="CategoriaFK" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TransacaoFK" class="control-label"></label>
-                <select asp-for="TransacaoFK" class="form-control" asp-items="ViewBag.TransacaoFK"></select>
-                <span asp-validation-for="TransacaoFK" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarrinhoFK" class="control-label"></label>
-                <select asp-for="CarrinhoFK" class="form-control" asp-items="ViewBag.CarrinhoFK"></select>
-                <span asp-validation-for="CarrinhoFK" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>
+        }
     </div>
 </div>
 
@@ -65,5 +59,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
