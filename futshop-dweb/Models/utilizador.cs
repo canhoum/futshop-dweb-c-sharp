@@ -7,10 +7,10 @@ namespace futshop_dweb.Models
     public class Utilizador
     {
         public Utilizador()
-    {
-        Transacao = new HashSet<Transacao>();
-    }
-    
+        {
+            Transacao = new HashSet<Transacao>();
+        }
+
         /// <summary>
         /// Chave Primária (PK)
         /// </summary>
@@ -46,16 +46,16 @@ namespace futshop_dweb.Models
         [Display(Name = "Código Postal")]
         public string codigopostal { get; set; }
 
-    
+
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório.")]
         [Display(Name = "Cidade")]
         public string Cidade { get; set; }
 
-        
+
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório.")]
         [Display(Name = "País")]
         public string Pais { get; set; }
-        
+
         [Required]
         [Display(Name = "Password")]
         public string Password { get; set; }
