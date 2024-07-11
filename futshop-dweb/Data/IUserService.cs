@@ -3,5 +3,7 @@
     public interface IUserService
     {
         bool IsAuthenticated { get; }
+
+        bool IsAdmin { get; }
     }
 }

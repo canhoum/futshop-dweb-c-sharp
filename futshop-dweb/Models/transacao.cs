@@ -8,7 +8,7 @@ namespace futshop_dweb.Models
     {
         public Transacao()
         {
-        ArtigosList= new HashSet<Artigos>();
+
     }
     
         [Key]
@@ -19,6 +19,10 @@ namespace futshop_dweb.Models
         [ForeignKey (nameof(Utilizador))]
         public int UtilizadorFK { get; set; }
         public Utilizador Utilizador { get; set; }
-        public ICollection<Artigos> ArtigosList { get; set; }
+
+
+        [ForeignKey(nameof(Artigo))]
+        public int ArtigoFK { get; set; }
+        public Artigos Artigo { get; set; }
     }
 }

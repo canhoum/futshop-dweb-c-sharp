@@ -30,9 +30,6 @@ namespace futshop_dweb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CarrinhoFK")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoriaFK")
                         .HasColumnType("int");
 
@@ -47,6 +44,9 @@ namespace futshop_dweb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Preco")
+                        .HasColumnType("float");
+
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
@@ -54,16 +54,9 @@ namespace futshop_dweb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TransacaoFK")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CarrinhoFK");
-
                     b.HasIndex("CategoriaFK");
-
-                    b.HasIndex("TransacaoFK");
 
                     b.ToTable("Artigos");
                 });
@@ -130,6 +123,9 @@ namespace futshop_dweb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompraId"));
 
+                    b.Property<int>("ArtigoFK")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime2");
 
@@ -140,6 +136,8 @@ namespace futshop_dweb.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CompraId");
+
+                    b.HasIndex("ArtigoFK");
 
                     b.HasIndex("UtilizadorFK");
 
@@ -164,6 +162,9 @@ namespace futshop_dweb.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -197,33 +198,34 @@ namespace futshop_dweb.Migrations
                     b.HasKey("UtilizadorId");
 
                     b.ToTable("Utilizadores");
+
+                    b.HasData(
+                        new
+                        {
+                            UtilizadorId = 1,
+                            Cidade = "Sistema",
+                            DataNascimento = new DateOnly(2024, 7, 11),
+                            Email = "sistema@gmail.com",
+                            IsAdmin = true,
+                            Nome = "Sistema",
+                            Pais = "Portugal",
+                            Password = "Admin123",
+                            RememberMe = false,
+                            Telemovel = "919999999",
+                            codigopostal = "4000-000",
+                            morada = "Sistema"
+                        });
                 });
 
             modelBuilder.Entity("DW_Final_Project.Models.Artigos", b =>
                 {
-                    b.HasOne("DW_Final_Project.Models.Carrinho", "Carrinho")
-                        .WithMany()
-                        .HasForeignKey("CarrinhoFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("futshop_dweb.Models.Categoria", "Categoria")
                         .WithMany("Artigos")
                         .HasForeignKey("CategoriaFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("futshop_dweb.Models.Transacao", "Transacao")
-                        .WithMany("ArtigosList")
-                        .HasForeignKey("TransacaoFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Carrinho");
-
                     b.Navigation("Categoria");
-
-                    b.Navigation("Transacao");
                 });
 
             modelBuilder.Entity("DW_Final_Project.Models.Carrinho", b =>
@@ -258,11 +260,19 @@ namespace futshop_dweb.Migrations
 
             modelBuilder.Entity("futshop_dweb.Models.Transacao", b =>
                 {
+                    b.HasOne("DW_Final_Project.Models.Artigos", "Artigo")
+                        .WithMany()
+                        .HasForeignKey("ArtigoFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("futshop_dweb.Models.Utilizador", "Utilizador")
                         .WithMany("Transacao")
                         .HasForeignKey("UtilizadorFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Artigo");
 
                     b.Navigation("Utilizador");
                 });
@@ -275,11 +285,6 @@ namespace futshop_dweb.Migrations
             modelBuilder.Entity("futshop_dweb.Models.Categoria", b =>
                 {
                     b.Navigation("Artigos");
-                });
-
-            modelBuilder.Entity("futshop_dweb.Models.Transacao", b =>
-                {
-                    b.Navigation("ArtigosList");
                 });
 
             modelBuilder.Entity("futshop_dweb.Models.Utilizador", b =>

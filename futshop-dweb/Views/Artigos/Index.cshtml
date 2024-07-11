@@ -25,17 +25,12 @@
                 @Html.DisplayNameFor(model => model.Quantidade)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PrecoAux)
+                @Html.DisplayNameFor(model => model.Preco)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Categoria.Nome)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Transacao.CompraId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Carrinho.Id)
-            </th>
+            
             <th></th>
         </tr>
     </thead>
@@ -56,17 +51,13 @@
                     @Html.DisplayFor(modelItem => item.Quantidade)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PrecoAux)
+                    @Html.DisplayFor(modelItem => item.Preco)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria.Nome)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Transacao.CompraId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Carrinho.Id)
-                </td>
+                
+               
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |

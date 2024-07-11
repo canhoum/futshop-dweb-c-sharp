@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using futshop_dweb.Models;
 using DW_Final_Project.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace futshop_dweb.Data
 {
@@ -18,10 +19,20 @@ namespace futshop_dweb.Data
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Transacao> Transacao { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Utilizador>().HasData(
+            new Utilizador { UtilizadorId = 1, Nome = "Sistema", Telemovel = "919999999", DataNascimento = DateOnly.FromDateTime(DateTime.Now), Email = "sistema@gmail.com", morada ="Sistema", codigopostal = "4000-000", Cidade = "Sistema", Pais = "Portugal", Password = "Admin123", IsAdmin = true }
+        );
+    }
+
         public bool IsUserLoggedIn()
         {
             return Global.LoggedUser!=null;
         }
+           }
+        }
 
-    }
-}
+    

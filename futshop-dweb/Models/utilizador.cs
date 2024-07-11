@@ -60,6 +60,8 @@ namespace futshop_dweb.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+         // Novo atributo para indicar se o utilizador é administrador
+        public bool IsAdmin { get; set; } = false;
 
         [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }

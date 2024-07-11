@@ -59,22 +59,29 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Descricao,Tamanho,Quantidade,PrecoAux,CategoriaFK")] Artigos artigos, IFormFile imageFile)
         {
+            ModelState.Remove("Categoria");
+            ModelState.Remove("Preco");
             if (ModelState.IsValid)
             {
                 if (!string.IsNullOrEmpty(artigos.PrecoAux))
                 {
                     if (decimal.TryParse(artigos.PrecoAux, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal preco))
                     {
-                        // Se necessário, armazene o valor do preço em um campo apropriado
+                        // Converte PrecoAux em um valor decimal e armazena em um campo apropriado se necessário
+                        artigos.Preco = Convert.ToDouble(preco);
                     }
                     else
                     {
                         ModelState.AddModelError("", "O preço do artigo é inválido.");
+                        ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
+                        return View(artigos);
                     }
                 }
                 else
                 {
                     ModelState.AddModelError("", "Deve escolher o preço do artigo, por favor.");
+                    ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
+                    return View(artigos);
                 }
 
                 if (imageFile != null && imageFile.Length > 0)
@@ -94,7 +101,7 @@ namespace futshop_dweb.Controllers
                     artigos.ImagemURL = "default-c.png";
                 }
 
-                _context.Add(artigos);
+                _context.Artigos.Add(artigos);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -143,16 +150,20 @@ namespace futshop_dweb.Controllers
                 {
                     if (decimal.TryParse(artigos.PrecoAux, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal preco))
                     {
-                        // Se necessário, armazene o valor do preço em um campo apropriado
+                        // Converte PrecoAux em um valor decimal e armazena em um campo apropriado se necessário
                     }
                     else
                     {
                         ModelState.AddModelError("", "O preço do artigo é inválido.");
+                        ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
+                        return View(artigos);
                     }
                 }
                 else
                 {
                     ModelState.AddModelError("", "Deve escolher o preço do artigo, por favor.");
+                    ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
+                    return View(artigos);
                 }
 
                 if (imageFile != null && imageFile.Length > 0)

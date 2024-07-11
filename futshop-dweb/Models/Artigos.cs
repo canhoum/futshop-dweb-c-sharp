@@ -34,6 +34,8 @@ namespace DW_Final_Project.Models
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [Display(Name = "Preço")]
         [RegularExpression("[0-9]+[.,]?[0-9]{1,2}", ErrorMessage = "No {0} só pode usar algarismos, e se desejar, duas casas decimais no final.")]
+        public double Preco { get; set; }
+        
         [NotMapped]
         public string PrecoAux { get; set; }
 
@@ -41,15 +43,10 @@ namespace DW_Final_Project.Models
 
         [ForeignKey(nameof(Categoria))]
         public int CategoriaFK { get; set; }
+        
         public Categoria Categoria { get; set; }
 
-        [ForeignKey(nameof(Transacao))]
-        public int TransacaoFK { get; set; }
-        public Transacao Transacao { get; set; }
 
-        [ForeignKey(nameof(Carrinho))]
-        public int CarrinhoFK { get; set; }
-        public Carrinho Carrinho { get; set; }
 
     }
 }

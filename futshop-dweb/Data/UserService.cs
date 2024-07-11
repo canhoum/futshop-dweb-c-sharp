@@ -15,6 +15,8 @@
         }
 
         public bool IsAuthenticated => Global.LoggedUser != null;
+
+        public bool IsAdmin => Global.LoggedUser != null && Global.LoggedUser.IsAdmin ==true;
     }
 
 }
