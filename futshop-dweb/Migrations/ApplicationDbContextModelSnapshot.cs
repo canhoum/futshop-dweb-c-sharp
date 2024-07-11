@@ -204,7 +204,7 @@ namespace futshop_dweb.Migrations
                         {
                             UtilizadorId = 1,
                             Cidade = "Sistema",
-                            DataNascimento = new DateOnly(2024, 7, 11),
+                            DataNascimento = new DateOnly(2024, 7, 12),
                             Email = "sistema@gmail.com",
                             IsAdmin = true,
                             Nome = "Sistema",

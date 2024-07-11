@@ -147,7 +147,7 @@ namespace futshop_dweb.Migrations
             migrationBuilder.InsertData(
                 table: "Utilizadores",
                 columns: new[] { "UtilizadorId", "Cidade", "DataNascimento", "Email", "IsAdmin", "Nome", "Pais", "Password", "RememberMe", "Telemovel", "codigopostal", "morada" },
-                values: new object[] { 1, "Sistema", new DateOnly(2024, 7, 11), "sistema@gmail.com", true, "Sistema", "Portugal", "Admin123", false, "919999999", "4000-000", "Sistema" });
+                values: new object[] { 1, "Sistema", new DateOnly(2024, 7, 12), "sistema@gmail.com", true, "Sistema", "Portugal", "Admin123", false, "919999999", "4000-000", "Sistema" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Artigos_CategoriaFK",

@@ -12,13 +12,8 @@ using futshop_dweb.Data;
 namespace futshop_dweb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:futshop-dweb/Migrations/20240711224645_PrimeiraMigracao.Designer.cs
-    [Migration("20240711224645_PrimeiraMigracao")]
+    [Migration("20240711234424_PrimeiraMigracao")]
     partial class PrimeiraMigracao
-========
-    [Migration("20240711195036_bd")]
-    partial class bd
->>>>>>>> 546856c2d60004e091febf618142ce8b5f4c8e9e:futshop-dweb/Migrations/20240711195036_bd.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -212,7 +207,7 @@ namespace futshop_dweb.Migrations
                         {
                             UtilizadorId = 1,
                             Cidade = "Sistema",
-                            DataNascimento = new DateOnly(2024, 7, 11),
+                            DataNascimento = new DateOnly(2024, 7, 12),
                             Email = "sistema@gmail.com",
                             IsAdmin = true,
                             Nome = "Sistema",
