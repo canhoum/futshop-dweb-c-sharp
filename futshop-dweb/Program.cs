@@ -11,8 +11,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddHttpContextAccessor(); 
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +36,7 @@ else
     app.UseHsts();
 }
 
+app.UseCors("AllowReactApp");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
