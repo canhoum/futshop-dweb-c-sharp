@@ -15,15 +15,15 @@ public class APIController : Controller
     }
 
     [HttpPost("/api/login")]
-    public async Task<IActionResult> Login(string email, string password)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginModel loginModel)
     {
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(loginModel.Email) || string.IsNullOrEmpty(loginModel.Password))
         {
             return BadRequest("Invalid client request");
         }
 
         var user = await _context.Utilizadores
-            .FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+            .FirstOrDefaultAsync(u => u.Email == loginModel.Email && u.Password == loginModel.Password);
 
         if (user != null)
         {
@@ -36,7 +36,7 @@ public class APIController : Controller
     }
 
 
-    
+
     [HttpPost("/api/register")]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterModel utilizador)
     {
@@ -84,10 +84,13 @@ public class APIController : Controller
             Console.WriteLine(ex.ToString());
         }
 
-
-
         return BadRequest();
     }
+
+
+
+
+
 }
 
 
