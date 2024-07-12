@@ -27,11 +27,11 @@ public class APIController : Controller
 
         if (user != null)
         {
-            return Ok("ok");
+            return Ok(user.UtilizadorId);
         }
         else
         {
-            return Ok("nao existe");
+            return NotFound("nao existe");
         }
     }
 
@@ -88,6 +88,22 @@ public class APIController : Controller
     }
 
 
+    [HttpGet("/api/user/{id}")]
+    public async Task<IActionResult> Profile(int id)
+    {
+        if (id == null || id == 0)
+        {
+            return BadRequest();
+        }
+        var person = await _context.Utilizadores.FindAsync(id);
+
+        if (person == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(person);
+    }
 
 
 
