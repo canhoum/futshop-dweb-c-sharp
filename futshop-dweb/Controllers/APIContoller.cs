@@ -57,7 +57,7 @@ public class APIController : Controller
             return BadRequest("User already exists");
         }
         DateOnly dataNasc;
-        if(!DateOnly.TryParse(utilizador.Dataformatada, out dataNasc))
+        if (!DateOnly.TryParse(utilizador.Dataformatada, out dataNasc))
         {
             return BadRequest("Invalid Date format");
         }
@@ -72,14 +72,15 @@ public class APIController : Controller
             codigopostal = utilizador.Utilizador.codigopostal,
             Cidade = utilizador.Utilizador.Cidade,
             Pais = utilizador.Utilizador.Pais
-            
+
         };
         try
         {
             _context.Utilizadores.Add(newUser);
             _context.SaveChanges();
             return Ok("User created successfully");
-        }catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
         }
@@ -104,10 +105,4 @@ public class APIController : Controller
 
         return Ok(person);
     }
-
-
-
 }
-
-
-
