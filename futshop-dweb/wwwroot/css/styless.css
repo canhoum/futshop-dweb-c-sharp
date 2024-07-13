@@ -1,0 +1,19 @@
+﻿.card {
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+    .card h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        margin: 5px 0;
+        font-size: 18px;
+    }

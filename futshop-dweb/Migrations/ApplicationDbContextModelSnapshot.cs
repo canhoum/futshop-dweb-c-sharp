@@ -17,7 +17,7 @@ namespace futshop_dweb.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -61,43 +61,6 @@ namespace futshop_dweb.Migrations
                     b.ToTable("Artigos");
                 });
 
-            modelBuilder.Entity("DW_Final_Project.Models.Carrinho", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("UtilizadorFK")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UtilizadorFK")
-                        .IsUnique();
-
-                    b.ToTable("carrinho");
-                });
-
-            modelBuilder.Entity("DW_Final_Project.Models.CarrinhoArtigo", b =>
-                {
-                    b.Property<int>("CarrinhoFK")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ArtigoFK")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
-
-                    b.HasKey("CarrinhoFK", "ArtigoFK");
-
-                    b.HasIndex("ArtigoFK");
-
-                    b.ToTable("CarrinhoArtigo");
-                });
-
             modelBuilder.Entity("futshop_dweb.Models.Categoria", b =>
                 {
                     b.Property<int>("Id")
@@ -123,9 +86,6 @@ namespace futshop_dweb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompraId"));
 
-                    b.Property<int>("ArtigoFK")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DataCompra")
                         .HasColumnType("datetime2");
 
@@ -137,11 +97,35 @@ namespace futshop_dweb.Migrations
 
                     b.HasKey("CompraId");
 
-                    b.HasIndex("ArtigoFK");
-
                     b.HasIndex("UtilizadorFK");
 
                     b.ToTable("Transacao");
+                });
+
+            modelBuilder.Entity("futshop_dweb.Models.Transacao_Artigo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArtigoFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArtigoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransacaoFK")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArtigoId");
+
+                    b.HasIndex("TransacaoFK");
+
+                    b.ToTable("Transacao_Artigo");
                 });
 
             modelBuilder.Entity("futshop_dweb.Models.Utilizador", b =>
@@ -204,7 +188,7 @@ namespace futshop_dweb.Migrations
                         {
                             UtilizadorId = 1,
                             Cidade = "Sistema",
-                            DataNascimento = new DateOnly(2024, 7, 12),
+                            DataNascimento = new DateOnly(2024, 7, 13),
                             Email = "sistema@gmail.com",
                             IsAdmin = true,
                             Nome = "Sistema",
@@ -228,71 +212,39 @@ namespace futshop_dweb.Migrations
                     b.Navigation("Categoria");
                 });
 
-            modelBuilder.Entity("DW_Final_Project.Models.Carrinho", b =>
+            modelBuilder.Entity("futshop_dweb.Models.Transacao", b =>
                 {
                     b.HasOne("futshop_dweb.Models.Utilizador", "Utilizador")
-                        .WithOne("Carrinho")
-                        .HasForeignKey("DW_Final_Project.Models.Carrinho", "UtilizadorFK")
+                        .WithMany()
+                        .HasForeignKey("UtilizadorFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Utilizador");
                 });
 
-            modelBuilder.Entity("DW_Final_Project.Models.CarrinhoArtigo", b =>
-                {
-                    b.HasOne("DW_Final_Project.Models.Artigos", "Artigos")
-                        .WithMany()
-                        .HasForeignKey("ArtigoFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DW_Final_Project.Models.Carrinho", "Carrinho")
-                        .WithMany("Artigos")
-                        .HasForeignKey("CarrinhoFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Artigos");
-
-                    b.Navigation("Carrinho");
-                });
-
-            modelBuilder.Entity("futshop_dweb.Models.Transacao", b =>
+            modelBuilder.Entity("futshop_dweb.Models.Transacao_Artigo", b =>
                 {
                     b.HasOne("DW_Final_Project.Models.Artigos", "Artigo")
                         .WithMany()
-                        .HasForeignKey("ArtigoFK")
+                        .HasForeignKey("ArtigoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("futshop_dweb.Models.Utilizador", "Utilizador")
-                        .WithMany("Transacao")
-                        .HasForeignKey("UtilizadorFK")
+                    b.HasOne("futshop_dweb.Models.Transacao", "Transacao")
+                        .WithMany()
+                        .HasForeignKey("TransacaoFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Artigo");
 
-                    b.Navigation("Utilizador");
-                });
-
-            modelBuilder.Entity("DW_Final_Project.Models.Carrinho", b =>
-                {
-                    b.Navigation("Artigos");
+                    b.Navigation("Transacao");
                 });
 
             modelBuilder.Entity("futshop_dweb.Models.Categoria", b =>
                 {
                     b.Navigation("Artigos");
-                });
-
-            modelBuilder.Entity("futshop_dweb.Models.Utilizador", b =>
-                {
-                    b.Navigation("Carrinho")
-                        .IsRequired();
-
-                    b.Navigation("Transacao");
                 });
 #pragma warning restore 612, 618
         }

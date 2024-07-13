@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using futshop_dweb.Data;
 using DW_Final_Project.Models;
+using futshop_dweb.Models;
 
 namespace futshop_dweb.Controllers
 {
@@ -21,9 +22,25 @@ namespace futshop_dweb.Controllers
             _context = context;
         }
 
+        // GET: Artigos/IndexUsers
+        //Lógica para os users
+        public async Task<IActionResult> IndexUsers()
+        {
+            var applicationDbContext = _context.Artigos.Include(a => a.Categoria);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+
         // GET: Artigos
         public async Task<IActionResult> Index()
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
             var applicationDbContext = _context.Artigos.Include(a => a.Categoria);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -123,7 +140,7 @@ namespace futshop_dweb.Controllers
                 return NotFound();
             }
 
-            artigos.PrecoAux = artigos.PrecoAux.ToString(CultureInfo.InvariantCulture);
+            artigos.PrecoAux = artigos.Preco.ToString();
             ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
             return View(artigos);
         }
@@ -133,6 +150,8 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao,Tamanho,Quantidade,PrecoAux,CategoriaFK")] Artigos artigos, IFormFile imageFile)
         {
+            ModelState.Remove("Categoria");
+            ModelState.Remove("Preco");
             if (id != artigos.Id)
             {
                 return NotFound();
@@ -151,6 +170,7 @@ namespace futshop_dweb.Controllers
                     if (decimal.TryParse(artigos.PrecoAux, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal preco))
                     {
                         // Converte PrecoAux em um valor decimal e armazena em um campo apropriado se necessário
+                        existingArtigo.Preco = Convert.ToDouble(preco);
                     }
                     else
                     {

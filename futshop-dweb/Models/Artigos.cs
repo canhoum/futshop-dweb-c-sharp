@@ -43,7 +43,7 @@ namespace DW_Final_Project.Models
 
         [ForeignKey(nameof(Categoria))]
         public int CategoriaFK { get; set; }
-        
+
         public Categoria Categoria { get; set; }
 
 

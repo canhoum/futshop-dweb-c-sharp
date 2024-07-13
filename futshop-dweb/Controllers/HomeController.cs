@@ -33,5 +33,10 @@ namespace futshop_dweb.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public IActionResult Info()
+        {
+            bool isAuthenticated = _userService.IsAuthenticated;
+            return View();
+        }
     }
 }

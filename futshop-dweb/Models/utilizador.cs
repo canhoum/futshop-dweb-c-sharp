@@ -8,7 +8,6 @@ namespace futshop_dweb.Models
     {
         public Utilizador()
         {
-            Transacao = new HashSet<Transacao>();
         }
 
         /// <summary>
@@ -68,11 +67,5 @@ namespace futshop_dweb.Models
 
         [NotMapped]
         public string DataNascFormatted => DataNascimento.ToString("dd/MM/yyyy");
-
-        // Relação um-para-muitos com Transacao
-        public ICollection<Transacao> Transacao { get; set; }
-
-        // Relação um-para-um com Carrinho
-        public Carrinho Carrinho { get; set; }
     }
 }
