@@ -27,6 +27,10 @@ public class APIController : Controller
 
         if (user != null)
         {
+            if(loginModel.Email == "sistema@gmail.com" && loginModel.Password == "Admin123")
+            {
+                Ok("é o admin");
+            }
             return Ok(user.UtilizadorId);
         }
         else
