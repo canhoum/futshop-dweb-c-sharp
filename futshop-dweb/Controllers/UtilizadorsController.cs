@@ -32,14 +32,18 @@ namespace futshop_dweb.Controllers
                 return NotFound();
             }
 
-            var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(m => m.UtilizadorId == id);
+            var utilizador = await _context.Utilizadores
+                .FirstOrDefaultAsync(m => m.UtilizadorId == id);
             if (utilizador == null)
             {
                 return NotFound();
             }
+            ViewBag.IsAdmin = utilizador.IsAdmin;
 
             return View(utilizador);
+
         }
+
 
         // GET: Utilizadors/Create
         public IActionResult Create()

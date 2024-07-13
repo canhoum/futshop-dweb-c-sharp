@@ -17,6 +17,13 @@
         public bool IsAuthenticated => Global.LoggedUser != null;
 
         public bool IsAdmin => Global.LoggedUser != null && Global.LoggedUser.IsAdmin ==true;
+
+        public bool addedToCart => Global.addedToCart == true;
+
+        public void rmCart()
+        {
+            Global.addedToCart = false;
+        }   
     }
 
 }

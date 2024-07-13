@@ -8,23 +8,8 @@ namespace futshop_dweb.Models
 
         public static List<Carrinho> Carrinho { get; set; } = new List<Carrinho>();
 
-        /*
-        Global.Carrinho.Add(new Carrinho
-        {
-            Artigo = produto,
-            Quantidade = quantidade
-        });
+        public static bool addedToCart { get; set; } = false;
 
-
-        Global.Carrinho.Remove(Global.Carrinho.Where(c => c.Artigo.Id == id).FirstOrDefault());
-
-
-        foreach (var item in Global.Carrinho)
-        {
-            _context.-.....(item);
-        }
-
-        
-        */
+       
     }
 }

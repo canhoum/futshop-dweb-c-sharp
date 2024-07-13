@@ -1,8 +1,20 @@
-﻿@model IEnumerable<DW_Final_Project.Models.Artigos>
+﻿@using futshop_dweb.Data
+@model IEnumerable<DW_Final_Project.Models.Artigos>
 @{
     ViewData["Title"] = "IndexUsers";
 
 }
+@{
+    @inject IUserService UserService
+    if(UserService.addedToCart)
+    {
+        <div class="alert alert-success" role="alert">
+            Produto adicionado ao carrinho com sucesso!
+        </div>
+        UserService.rmCart();
+    }
+}
+
 
 <h1>Lista de Artigos</h1>
 <table class="table">
@@ -58,8 +70,8 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria.Nome)
                 </td>
-                <td>
-
+                 <td>
+                    <a asp-action="addCarrinho" asp-route-id="@item.Id" class="btn btn-secondary">Adicionar ao carrinho</a>
                 </td>
 
             </tr>

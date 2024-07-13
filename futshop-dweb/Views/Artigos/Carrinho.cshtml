@@ -1,0 +1,46 @@
+﻿@model List<DW_Final_Project.Models.Carrinho>
+
+@{
+    ViewData["Title"] = "Carrinho";
+}
+
+<h2>Shopping Cart</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="~/images/@item.Artigo.ImagemURL" alt="@item.Artigo.Nome" width="50" height="50" />
+                    </td>
+                    <td>@item.Artigo.Nome</td>
+                    <td>@item.Artigo.Descricao</td>
+                    <td>@item.Artigo.Categoria.Nome</td>
+                    <td>@item.Artigo.Tamanho</td>
+                    <td>@item.Quantidade</td>
+                    <td>@item.Artigo.Preco</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a href="@Url.Action("IndexUsers", "Artigos")" class="btn btn-primary">Continue Shopping</a>

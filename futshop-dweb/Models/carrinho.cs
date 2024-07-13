@@ -8,7 +8,13 @@ using System.Linq;
 namespace DW_Final_Project.Models
 {
     public class Carrinho
+       
     {
+     public Carrinho(Artigos art,int qtd)
+        {
+            Artigo = art;
+            Quantidade = qtd;
+        }
         public Artigos Artigo { get; set; }
         public int Quantidade { get; set; }
 

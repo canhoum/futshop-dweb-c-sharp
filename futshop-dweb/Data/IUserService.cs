@@ -5,5 +5,9 @@
         bool IsAuthenticated { get; }
 
         bool IsAdmin { get; }
+
+        bool addedToCart { get; }
+
+        void rmCart();
     }
 }

@@ -1,4 +1,4 @@
-﻿﻿@using futshop_dweb.Data
+﻿@using futshop_dweb.Data
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/.styless.css" asp-append-version="true" />
-
 </head>
 @{
     @inject IUserService UserService
@@ -31,7 +30,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Info">Desenvolvedores</a>
                         </li>
-                        @if (UserService.IsAdmin){
+                        @if (UserService.IsAdmin)
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="Index">Artigos</a>
                             </li>
@@ -41,20 +41,27 @@
                         }
                         else
                         {
-                         <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="IndexUsers">Artigos</a>
-                         </li>
+                            </li>
                         }
                     </ul>
                     <ul class="navbar-nav">
                         @if (UserService.IsAuthenticated)
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="Carrinho">Carrinho</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Logout">Logout</a>
                             </li>
+                            
                         }
                         else
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="Carrinho">Carrinho</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Register">Register</a>
                             </li>
@@ -63,7 +70,6 @@
                             </li>
                         }
                     </ul>
-
                 </div>
             </div>
         </nav>
@@ -74,6 +80,6 @@
         </main>
     </div>
 
-   
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

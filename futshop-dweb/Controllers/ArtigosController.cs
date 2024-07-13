@@ -11,6 +11,7 @@ using futshop_dweb.Data;
 using DW_Final_Project.Models;
 using futshop_dweb.Models;
 
+
 namespace futshop_dweb.Controllers
 {
     public class ArtigosController : Controller
@@ -28,6 +29,27 @@ namespace futshop_dweb.Controllers
         {
             var applicationDbContext = _context.Artigos.Include(a => a.Categoria);
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> addCarrinho(int? id)
+        {
+            var applicationDbContext = _context.Artigos.Include(a => a.Categoria);
+            var artigo = await _context.Artigos
+                .Include(a => a.Categoria)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (artigo == null)
+            {
+                return NotFound();
+            }
+            Global.Carrinho.Add(new Carrinho(artigo,1));
+            Global.addedToCart = true;
+           // return View("IndexUsers", await applicationDbContext.ToListAsync());
+           return RedirectToAction("IndexUsers");
+        }
+        public IActionResult Carrinho()
+        {
+            var cartItems = Global.Carrinho; // Assuming Global.Carrinho holds the cart items
+            return View(cartItems);
         }
 
 

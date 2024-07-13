@@ -56,6 +56,17 @@ namespace futshop_dweb.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Verifica se já existe uma categoria com o mesmo nome
+                var existingCategoria = await _context.Categoria
+           .FirstOrDefaultAsync(c => c.Nome == categoria.Nome);
+
+                if (existingCategoria != null)
+                {
+                    // Não deixa criar uma nova categoria caso já existe
+                    ModelState.AddModelError("Nome", "Já existe uma categoria com esse nome.");
+                    return View(categoria);
+                }
+
                 _context.Add(categoria);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
