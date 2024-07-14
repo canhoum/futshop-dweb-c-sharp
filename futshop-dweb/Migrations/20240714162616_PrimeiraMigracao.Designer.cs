@@ -12,7 +12,7 @@ using futshop_dweb.Data;
 namespace futshop_dweb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240714111530_PrimeiraMigracao")]
+    [Migration("20240714162616_PrimeiraMigracao")]
     partial class PrimeiraMigracao
     {
         /// <inheritdoc />
@@ -84,12 +84,47 @@ namespace futshop_dweb.Migrations
                         new
                         {
                             Id = 1,
-                            Nome = "Liga Portuguesa"
+                            Nome = "Liga Betclic"
                         },
                         new
                         {
                             Id = 2,
-                            Nome = "Liga Espanhola"
+                            Nome = "Premier League"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nome = "La Liga"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nome = "Liga Betclic Retro"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Nome = "Premier League Retro"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Nome = "La Liga Retro"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Nome = "Europa"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Nome = "América"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Nome = "África"
                         });
                 });
 

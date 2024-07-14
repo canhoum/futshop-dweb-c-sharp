@@ -29,8 +29,16 @@ namespace futshop_dweb.Data
         );
 
         modelBuilder.Entity<Categoria>().HasData(
-            new Categoria { Id = 1, Nome = "Liga Portuguesa" },
-            new Categoria { Id = 2, Nome = "Liga Espanhola" }
+            new Categoria { Id = 1, Nome = "Liga Betclic" },
+            new Categoria { Id = 2, Nome = "Premier League" },
+            new Categoria { Id = 3, Nome = "La Liga" },
+            new Categoria { Id = 4, Nome = "Liga Betclic Retro" },
+            new Categoria { Id = 5, Nome = "Premier League Retro" },
+            new Categoria { Id = 6, Nome = "La Liga Retro" },
+            new Categoria { Id = 7, Nome = "Europa" },
+            new Categoria { Id = 8, Nome = "América" },
+            new Categoria { Id = 9, Nome = "África" }
+
         );
     }
 

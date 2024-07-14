@@ -126,8 +126,15 @@ namespace futshop_dweb.Migrations
                 columns: new[] { "Id", "Nome" },
                 values: new object[,]
                 {
-                    { 1, "Liga Portuguesa" },
-                    { 2, "Liga Espanhola" }
+                    { 1, "Liga Betclic" },
+                    { 2, "Premier League" },
+                    { 3, "La Liga" },
+                    { 4, "Liga Betclic Retro" },
+                    { 5, "Premier League Retro" },
+                    { 6, "La Liga Retro" },
+                    { 7, "Europa" },
+                    { 8, "América" },
+                    { 9, "África" }
                 });
 
             migrationBuilder.InsertData(

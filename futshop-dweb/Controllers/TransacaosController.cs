@@ -192,7 +192,7 @@ public class TransacaosController : Controller
         transacao = await _context.Transacao.OrderByDescending(t => t.CompraId).FirstOrDefaultAsync();
         foreach (var item in Global.Carrinho)
         {
-            Transacao_Artigo transacao_Artigo = new Transacao_Artigo(transacao.CompraId,item.Artigo.Id);
+            Transacao_Artigo transacao_Artigo = new Transacao_Artigo(item.Artigo.Id,transacao.CompraId);
             _context.Transacao_Artigo.Add(transacao_Artigo);
             await _context.SaveChangesAsync();
         }
