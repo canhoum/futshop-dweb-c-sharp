@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using futshop_dweb.Models;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using DW_Final_Project.Models;
+using System.Globalization;
 
 
 public class APIController : Controller
@@ -14,6 +15,7 @@ public class APIController : Controller
         _context = context;
     }
 
+    //login utilizadores
     [HttpPost("/api/login")]
     public async Task<IActionResult> LoginAsync([FromBody] LoginModel loginModel)
     {
@@ -27,11 +29,8 @@ public class APIController : Controller
 
         if (user != null)
         {
-            if(loginModel.Email == "sistema@gmail.com" && loginModel.Password == "Admin123")
-            {
-                Ok("é o admin");
-            }
-            return Ok(user.UtilizadorId);
+
+            return Ok(user);
         }
         else
         {
@@ -40,7 +39,7 @@ public class APIController : Controller
     }
 
 
-
+    //registo utilizadores
     [HttpPost("/api/register")]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterModel utilizador)
     {
@@ -93,6 +92,8 @@ public class APIController : Controller
     }
 
 
+
+    //para ir buscar as infos dos users e apresentar no perfil e na fatura
     [HttpGet("/api/user/{id}")]
     public async Task<IActionResult> Profile(int id)
     {
@@ -108,5 +109,54 @@ public class APIController : Controller
         }
 
         return Ok(person);
+    }
+
+
+
+    [HttpPost("/api/artigo")]
+    public async Task<IActionResult> PostArtigo([FromBody] ArtigoDTO artigoDTO){
+        try
+        {
+            
+
+            // Aqui você pode validar o modelo ArtigoDTO antes de prosseguir, se necessário
+
+            // Convertendo ArtigoDTO para a entidade Artigos
+            Artigos artigo = new Artigos
+            {
+                Nome = artigoDTO.Nome,
+                Descricao = artigoDTO.Descricao,
+                Tamanho = artigoDTO.Tamanho,
+                Quantidade = artigoDTO.Quantidade,
+                Preco = artigoDTO.Preco,
+                CategoriaFK = artigoDTO.CategoriaFK
+            };
+
+            // Salvar artigo no banco de dados (ou qualquer outra lógica necessária)
+            _context.Artigos.Add(artigo);
+            await _context.SaveChangesAsync();
+            return Ok("User created successfully");
+
+        }
+        catch (Exception ex)
+        {
+            // Log de erros ou tratamento de exceções
+            return StatusCode(500, $"Erro interno: {ex.Message}");
+        }
+    }
+
+
+    [HttpGet("/api/utilizadores")]
+    public async Task<IActionResult> GetUtilizadores()
+    {
+        var utilizadores = await _context.Utilizadores.ToListAsync();
+        return Ok(utilizadores);
+    }
+
+    [HttpGet("/api/artigos")]
+    public async Task<IActionResult> GetArtigos()
+    {
+        var artigos = await _context.Artigos.ToListAsync();
+        return Ok(artigos);
     }
 }
