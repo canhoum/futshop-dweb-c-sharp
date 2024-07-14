@@ -6,6 +6,16 @@ namespace futshop_dweb.Models
 {
     public class Transacao_Artigo
     {
+
+        public Transacao_Artigo()
+        {
+        }
+        public Transacao_Artigo(int art, int trans)
+        {
+            ArtigoFK = art;
+            TransacaoFK = trans;
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -13,7 +23,7 @@ namespace futshop_dweb.Models
         public int TransacaoFK { get; set; }
         public Transacao Transacao { get; set; }
         
-        [ForeignKey (nameof(Artigos))]
+        [ForeignKey (nameof(Artigo))]
         public int ArtigoFK { get; set; }
         public Artigos Artigo { get; set; }
     }

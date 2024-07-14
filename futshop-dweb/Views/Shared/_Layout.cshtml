@@ -60,6 +60,9 @@
                         @if (UserService.IsAuthenticated)
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-route-id="@UserService.getUserID()" asp-controller="Utilizadors" asp-action="VerPerfil">Perfil</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="Carrinho">Carrinho</a>
                             </li>
                             

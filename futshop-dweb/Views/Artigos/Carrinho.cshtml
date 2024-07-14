@@ -1,11 +1,21 @@
-﻿@model List<DW_Final_Project.Models.Carrinho>
+﻿@using futshop_dweb.Data
+@model List<DW_Final_Project.Models.Carrinho>
 
 @{
     ViewData["Title"] = "Carrinho";
 }
 
 <h2>Carrinho de compras</h2>
-
+@{
+    @inject IUserService UserService
+    if(UserService.finishedOrder)
+    {
+        <div class="alert alert-success" role="alert">
+            Compra realizada com sucesso. Obrigado pela sua encomenda!
+        </div>
+        UserService.resetFinishedOrder();
+    }
+}
 @if (Model == null || !Model.Any())
 {
     <p>O teu carrinho está vazio.</p>
@@ -22,6 +32,7 @@ else
                 <th>Tamanho</th>
                 <th>Quantidade</th>
                 <th>Preço</th>
+                <th>Remover do carrinho</th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +48,10 @@ else
                     <td>@item.Artigo.Tamanho</td>
                     <td>@item.Quantidade</td>
                     <td>@item.Artigo.Preco</td>
+                    <td>
+                        <form asp-action="rmCart" asp-route-id="@item.Artigo.Id" method="post">
+                            <button type="submit" class="btn btn-danger">Remover</button>
+                        </form>
                 </tr>
             }
         </tbody>
@@ -44,3 +59,5 @@ else
 }
 
 <a href="@Url.Action("IndexUsers", "Artigos")" class="btn btn-primary">Continuar compra</a>
+
+<a href="@Url.Action("FinalizarCompra", "Transacaos")" class="btn btn-primary">Finalizar Compra</a>

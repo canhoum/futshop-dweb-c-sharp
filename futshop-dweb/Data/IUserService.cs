@@ -9,5 +9,13 @@
         bool addedToCart { get; }
 
         void rmCart();
+
+        void removeCart(int id);
+
+        bool finishedOrder { get; }
+
+        void resetFinishedOrder();
+
+        int getUserID();
     }
 }

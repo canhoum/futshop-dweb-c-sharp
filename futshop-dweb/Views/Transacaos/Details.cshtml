@@ -1,7 +1,7 @@
-﻿@model IEnumerable<futshop_dweb.Models.Transacao>
+﻿@model IEnumerable<futshop_dweb.Models.Transacao_Artigo>
 
 @{
-    ViewData["Title"] = "Transações por Utilizador";
+    ViewData["Title"] = "Transações nº " + Model.First().TransacaoFK;
 }
 
 <h1>Transações por Utilizador</h1>
@@ -9,10 +9,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>CompraId</th>
-            <th>Data da Compra</th>
-            <th>Total</th>
-            <th>Utilizador</th>
+
+            <th>Transacao</th>
+            <th>Artigo</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
             <th></th>
         </tr>
     </thead>
@@ -20,16 +21,15 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.CompraId)</td>
-                <td>@Html.DisplayFor(modelItem => item.DataCompra)</td>
-                <td>@Html.DisplayFor(modelItem => item.Total)</td>
-                <td>@Html.DisplayFor(modelItem => item.Utilizador.Nome)</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.CompraId">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@item.CompraId">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CompraId">Delete</a>
-                </td>
+                <td>@Html.DisplayFor(modelItem => item.TransacaoFK)</td>
+                <td>@Html.DisplayFor(modelItem => item.Artigo.Nome)</td>
+                <td>@Html.DisplayFor(modelItem => item.Artigo.Preco)</td>
+                <td>@Html.DisplayFor(modelItem => item.Artigo.Quantidade)</td>
+                
             </tr>
+            
         }
     </tbody>
+    <p>Total: @Model.First().Transacao.Total</p>
+    <p> Data de Compra: @Model.First().Transacao.DataCompra</p>
 </table>

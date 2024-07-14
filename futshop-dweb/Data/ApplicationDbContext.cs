@@ -24,7 +24,13 @@ namespace futshop_dweb.Data
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Utilizador>().HasData(
-            new Utilizador { UtilizadorId = 1, Nome = "Sistema", Telemovel = "919999999", DataNascimento = DateOnly.FromDateTime(DateTime.Now), Email = "sistema@gmail.com", morada ="Sistema", codigopostal = "4000-000", Cidade = "Sistema", Pais = "Portugal", Password = "Admin123", IsAdmin = true }
+            new Utilizador { UtilizadorId = 1, Nome = "Sistema", Telemovel = "919999999", DataNascimento = DateOnly.FromDateTime(DateTime.Now), Email = "sistema@gmail.com", morada ="Sistema", codigopostal = "4000-000", Cidade = "Sistema", Pais = "Portugal", Password = "Admin123", IsAdmin = true },
+            new Utilizador { UtilizadorId = 2, Nome = "a", Telemovel = "919999999", DataNascimento = DateOnly.FromDateTime(DateTime.Now), Email = "a@a.com", morada = "a", codigopostal = "4000-000", Cidade = "a", Pais = "Portugal", Password = "12345", IsAdmin = false }
+        );
+
+        modelBuilder.Entity<Categoria>().HasData(
+            new Categoria { Id = 1, Nome = "Liga Portuguesa" },
+            new Categoria { Id = 2, Nome = "Liga Espanhola" }
         );
     }
 

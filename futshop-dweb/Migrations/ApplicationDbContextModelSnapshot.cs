@@ -76,6 +76,18 @@ namespace futshop_dweb.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categoria");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nome = "Liga Portuguesa"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nome = "Liga Espanhola"
+                        });
                 });
 
             modelBuilder.Entity("futshop_dweb.Models.Transacao", b =>
@@ -113,15 +125,12 @@ namespace futshop_dweb.Migrations
                     b.Property<int>("ArtigoFK")
                         .HasColumnType("int");
 
-                    b.Property<int>("ArtigoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TransacaoFK")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtigoId");
+                    b.HasIndex("ArtigoFK");
 
                     b.HasIndex("TransacaoFK");
 
@@ -188,7 +197,7 @@ namespace futshop_dweb.Migrations
                         {
                             UtilizadorId = 1,
                             Cidade = "Sistema",
-                            DataNascimento = new DateOnly(2024, 7, 13),
+                            DataNascimento = new DateOnly(2024, 7, 14),
                             Email = "sistema@gmail.com",
                             IsAdmin = true,
                             Nome = "Sistema",
@@ -198,6 +207,21 @@ namespace futshop_dweb.Migrations
                             Telemovel = "919999999",
                             codigopostal = "4000-000",
                             morada = "Sistema"
+                        },
+                        new
+                        {
+                            UtilizadorId = 2,
+                            Cidade = "a",
+                            DataNascimento = new DateOnly(2024, 7, 14),
+                            Email = "a@a.com",
+                            IsAdmin = false,
+                            Nome = "a",
+                            Pais = "Portugal",
+                            Password = "12345",
+                            RememberMe = false,
+                            Telemovel = "919999999",
+                            codigopostal = "4000-000",
+                            morada = "a"
                         });
                 });
 
@@ -227,7 +251,7 @@ namespace futshop_dweb.Migrations
                 {
                     b.HasOne("DW_Final_Project.Models.Artigos", "Artigo")
                         .WithMany()
-                        .HasForeignKey("ArtigoId")
+                        .HasForeignKey("ArtigoFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

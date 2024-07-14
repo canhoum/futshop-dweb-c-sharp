@@ -8,7 +8,13 @@ namespace futshop_dweb.Models
     {
         public Transacao()
         {
-
+        }
+        public Transacao(decimal t, int ufk)
+        {
+            CompraId = 0;
+            DataCompra = DateTime.Now;
+            Total=t;
+            UtilizadorFK = ufk;
         }
     
         [Key]

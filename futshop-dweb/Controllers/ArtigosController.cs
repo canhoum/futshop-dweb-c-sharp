@@ -50,6 +50,24 @@ namespace futshop_dweb.Controllers
             var cartItems = Global.Carrinho; 
             return View(cartItems);
         }
+       public IActionResult rmCart(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var artigo = Global.Carrinho.FirstOrDefault(c => c.Artigo.Id == id);
+            if (artigo == null)
+            {
+                return NotFound();
+            }
+
+            Global.Carrinho.Remove(artigo);
+            Global.addedToCart = false;
+
+            return RedirectToAction("Carrinho");
+        }
 
 
         // GET: Artigos
@@ -232,6 +250,7 @@ namespace futshop_dweb.Controllers
                 existingArtigo.Descricao = artigos.Descricao;
                 existingArtigo.Tamanho = artigos.Tamanho;
                 existingArtigo.Quantidade = artigos.Quantidade;
+                existingArtigo.CategoriaFK = artigos.CategoriaFK;
 
                 if (!string.IsNullOrEmpty(artigos.PrecoAux))
                 {

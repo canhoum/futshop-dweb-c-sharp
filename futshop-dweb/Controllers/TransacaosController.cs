@@ -28,15 +28,16 @@ public class TransacaosController : Controller
             return NotFound();
         }
         //Verifica as transações feitas pelo utilizador, s
-        var transacao = await _context.Transacao
-            .Include(t => t.Utilizador)
-            .FirstOrDefaultAsync(m => m.CompraId == id);
-        if (transacao == null)
+        var transacao_artigo = await _context.Transacao_Artigo
+            .Include(t => t.Artigo)
+            .Include(t => t.Transacao)
+            .Where(t => t.TransacaoFK == id).ToListAsync();
+        if (transacao_artigo == null)
         {
-            return View("Utilizadors","Details");
+            return View("Index");
         }
 
-        return View(transacao);
+        return View(transacao_artigo);
     }
 
     // GET: Transacaos/Create
@@ -156,16 +157,16 @@ public class TransacaosController : Controller
     }
 
     // GET: Transacaos/TransacoesPorUtilizador
-    public async Task<IActionResult> TransacoesPorUtilizador(int? utilizadorId)
+    public async Task<IActionResult> TransacoesPorUtilizador(int? id)
     {
-        if (utilizadorId == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var transacoes = await _context.Transacao
             .Include(t => t.Utilizador)
-            .Where(t => t.UtilizadorFK == utilizadorId)
+            .Where(t => t.UtilizadorFK == id)
             .ToListAsync();
 
         if (transacoes == null || transacoes.Count == 0)
@@ -173,6 +174,30 @@ public class TransacaosController : Controller
             return NotFound();
         }
 
-        return View(transacoes);
+        return View("Index",transacoes);
+    }
+
+    public async Task<IActionResult> FinalizarCompra()
+    {
+        decimal total = 0;
+        foreach (var item in Global.Carrinho)
+        {
+            total += Convert.ToDecimal(item.Artigo.Preco) * item.Quantidade;
+        }
+
+        Transacao transacao = new Transacao(total,Global.LoggedUser.UtilizadorId);
+        _context.Transacao.Add(transacao);
+        await _context.SaveChangesAsync();
+        //receber o ultimo resutlado da transacao
+        transacao = await _context.Transacao.OrderByDescending(t => t.CompraId).FirstOrDefaultAsync();
+        foreach (var item in Global.Carrinho)
+        {
+            Transacao_Artigo transacao_Artigo = new Transacao_Artigo(transacao.CompraId,item.Artigo.Id);
+            _context.Transacao_Artigo.Add(transacao_Artigo);
+            await _context.SaveChangesAsync();
+        }
+        Global.finishedOrder = true;
+        Global.Carrinho.Clear();
+        return RedirectToAction("Carrinho","Artigos");
     }
 }

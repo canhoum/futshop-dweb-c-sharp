@@ -55,6 +55,26 @@ namespace futshop_dweb.Controllers
 
         }
 
+        public async Task<IActionResult> VerPerfil(int? id)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var utilizador = await _context.Utilizadores
+                .FirstOrDefaultAsync(m => m.UtilizadorId == id);
+            if (utilizador == null)
+            {
+                return NotFound();
+            }
+            ViewBag.IsAdmin = utilizador.IsAdmin;
+
+            return View("Details", utilizador);
+
+        }
+
 
         // GET: Utilizadors/Create
         public IActionResult Create()

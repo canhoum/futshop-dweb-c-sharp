@@ -10,6 +10,7 @@ namespace futshop_dweb.Models
 
         public static bool addedToCart { get; set; } = false;
 
+        public static bool finishedOrder { get; set; } = false;
        
     }
 }
