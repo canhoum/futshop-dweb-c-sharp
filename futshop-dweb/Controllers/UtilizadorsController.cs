@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using futshop_dweb.Data;
 using futshop_dweb.Models;
 using RestSharp;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace futshop_dweb.Controllers
 {
@@ -21,12 +22,22 @@ namespace futshop_dweb.Controllers
         // GET: Utilizadors
         public async Task<IActionResult> Index()
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(await _context.Utilizadores.ToListAsync());
         }
 
         // GET: Utilizadors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -48,7 +59,7 @@ namespace futshop_dweb.Controllers
         // GET: Utilizadors/Create
         public IActionResult Create()
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         // POST: Utilizadors/Create
@@ -63,16 +74,13 @@ namespace futshop_dweb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(utilizador);
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Utilizadors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            
 
             var utilizador = await _context.Utilizadores.FindAsync(id);
             if (utilizador == null)
@@ -87,11 +95,7 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UtilizadorId,Nome,Telemovel,DataNascimento,Email,morada,codigopostal,Cidade,Pais")] Utilizador utilizador)
         {
-            if (id != utilizador.UtilizadorId)
-            {
-                return NotFound();
-            }
-
+            
             if (ModelState.IsValid)
             {
                 try
@@ -118,6 +122,8 @@ namespace futshop_dweb.Controllers
         // GET: Utilizadors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            
+
             if (id == null)
             {
                 return NotFound();
@@ -137,6 +143,7 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            
             var utilizador = await _context.Utilizadores.FindAsync(id);
             if (utilizador != null)
             {

@@ -27,13 +27,13 @@ public class TransacaosController : Controller
         {
             return NotFound();
         }
-
+        //Verifica as transações feitas pelo utilizador, s
         var transacao = await _context.Transacao
             .Include(t => t.Utilizador)
             .FirstOrDefaultAsync(m => m.CompraId == id);
         if (transacao == null)
         {
-            return NotFound();
+            return View("Utilizadors","Details");
         }
 
         return View(transacao);

@@ -43,12 +43,11 @@ namespace futshop_dweb.Controllers
             }
             Global.Carrinho.Add(new Carrinho(artigo,1));
             Global.addedToCart = true;
-           // return View("IndexUsers", await applicationDbContext.ToListAsync());
-           return RedirectToAction("IndexUsers");
+            return RedirectToAction("IndexUsers");
         }
         public IActionResult Carrinho()
         {
-            var cartItems = Global.Carrinho; // Assuming Global.Carrinho holds the cart items
+            var cartItems = Global.Carrinho; 
             return View(cartItems);
         }
 
@@ -56,12 +55,13 @@ namespace futshop_dweb.Controllers
         // GET: Artigos
         public async Task<IActionResult> Index()
         {
+            //Verifica se o usuário está logado e se é um administrador, se não for admin retorna para a página inicial
             if (Global.LoggedUser == null)
             {
                 return RedirectToAction("Login", "Utilizadors");
             }else if (Global.LoggedUser.IsAdmin == false)
             {
-                return RedirectToAction("Login", "Utilizadors");
+                return RedirectToAction("Index", "Home");
             }
             var applicationDbContext = _context.Artigos.Include(a => a.Categoria);
             return View(await applicationDbContext.ToListAsync());
@@ -89,6 +89,15 @@ namespace futshop_dweb.Controllers
         // GET: Artigos/Create
         public IActionResult Create()
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome");
             return View();
         }
@@ -98,16 +107,29 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Descricao,Tamanho,Quantidade,PrecoAux,CategoriaFK")] Artigos artigos, IFormFile imageFile)
         {
+
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             ModelState.Remove("Categoria");
             ModelState.Remove("Preco");
             if (ModelState.IsValid)
             {
+                
+
                 if (!string.IsNullOrEmpty(artigos.PrecoAux))
                 {
+                    
+
                     if (decimal.TryParse(artigos.PrecoAux, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal preco))
                     {
-                        // Converte PrecoAux em um valor decimal e armazena em um campo apropriado se necessário
-                        artigos.Preco = Convert.ToDouble(preco);
+                                           artigos.Preco = Convert.ToDouble(preco);
                     }
                     else
                     {
@@ -144,13 +166,25 @@ namespace futshop_dweb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
             return View(artigos);
+
+          
         }
 
         // GET: Artigos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -172,6 +206,15 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao,Tamanho,Quantidade,PrecoAux,CategoriaFK")] Artigos artigos, IFormFile imageFile)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             ModelState.Remove("Categoria");
             ModelState.Remove("Preco");
             if (id != artigos.Id)
@@ -246,6 +289,15 @@ namespace futshop_dweb.Controllers
         // GET: Artigos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -267,6 +319,15 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var artigos = await _context.Artigos.FindAsync(id);
             if (artigos != null)
             {

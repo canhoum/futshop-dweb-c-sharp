@@ -4,24 +4,24 @@
     ViewData["Title"] = "Carrinho";
 }
 
-<h2>Shopping Cart</h2>
+<h2>Carrinho de compras</h2>
 
 @if (Model == null || !Model.Any())
 {
-    <p>Your cart is empty.</p>
+    <p>O teu carrinho está vazio.</p>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Size</th>
-                <th>Quantity</th>
-                <th>Price</th>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Tamanho</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
             </tr>
         </thead>
         <tbody>
@@ -43,4 +43,4 @@ else
     </table>
 }
 
-<a href="@Url.Action("IndexUsers", "Artigos")" class="btn btn-primary">Continue Shopping</a>
+<a href="@Url.Action("IndexUsers", "Artigos")" class="btn btn-primary">Continuar compra</a>

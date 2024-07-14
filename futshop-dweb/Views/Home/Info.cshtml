@@ -1,15 +1,25 @@
 ﻿@{
-    ViewData["Title"] = "Info";
+    ViewData["Title"] = "Informações sobre os desenvolvedores";
 }
 
 <link rel="stylesheet" href="~/css/.styless.css" asp-append-version="true" />
 
-<div class="card">
-    <h1>@ViewData["Title"]</h1>
-    <p>@DateTime.Now.Year Desenvolvimento Web</p>
 
-    <p><strong>Nome do aluno:</strong> Joao Silva</p>
-    <p><strong>Engenharia Informatica</strong></p>
-    <p><strong>Naturalidade:</strong> Leiria</p>
-    <p><strong>Email pessoal:</strong> jpsilva72011@gmail.com</p>
+<div class="container">
+    <div class="card">
+        <h1>@ViewData["Title"]</h1>
+        <p>@DateTime.Now.Year Desenvolvimento Web</p>
+
+        <p><strong>Nome do aluno:</strong> João Silva</p>
+        <p><strong>Engenharia Informatica</strong></p>
+        <p><strong>Naturalidade:</strong> Leiria</p>
+        <p><strong>Email pessoal:</strong> jpsilva72011@gmail.com</p>
+    </div>
+
+    <div class="card">
+        <p><strong>Nome do aluno:</strong> Miguel Sebastião</p>
+        <p><strong>Engenharia Informatica</strong></p>
+        <p><strong>Naturalidade:</strong> Madeira</p>
+        <p><strong>Email pessoal:</strong> aluno22116@ipt.pt</p>
+    </div>
 </div>

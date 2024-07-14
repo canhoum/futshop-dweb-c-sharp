@@ -1,4 +1,5 @@
 ﻿@using futshop_dweb.Data
+@using System.Security.Claims
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,16 +9,17 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/.styless.css" asp-append-version="true" />
+    <style>
+        .navbar {
+            background-color: lightgray !important;
+        }
+    </style>
 </head>
-@{
-    @inject IUserService UserService
-
-}
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">futshop_dweb</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Futshop</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -25,18 +27,18 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Página Inicial</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Info">Desenvolvedores</a>
-                        </li>
-                        @if (UserService.IsAdmin)
+                        @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="Index">Artigos</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Categoria</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Index">Utilizadores</a>
                             </li>
                         }
                         else
@@ -45,17 +47,28 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="IndexUsers">Artigos</a>
                             </li>
                         }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Info">Desenvolvedores</a>
+                        </li>
                     </ul>
                     <ul class="navbar-nav">
-                        @if (UserService.IsAuthenticated)
+                        @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="Carrinho">Carrinho</a>
                             </li>
                             <li class="nav-item">
+                                @{
+                                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                                }
+                                @if (!string.IsNullOrEmpty(userId))
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Details" asp-route-id="@userId">Meus Detalhes</a>
+                                }
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Logout">Logout</a>
                             </li>
-                            
                         }
                         else
                         {
@@ -63,7 +76,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Artigos" asp-action="Carrinho">Carrinho</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Register">Register</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Register">Registar</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadors" asp-action="Login">Login</a>
@@ -79,7 +92,6 @@
             @RenderBody()
         </main>
     </div>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

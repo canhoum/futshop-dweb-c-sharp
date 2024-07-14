@@ -22,12 +22,30 @@ namespace futshop_dweb.Controllers
         // GET: Categorias
         public async Task<IActionResult> Index()
         {
+            
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View(await _context.Categoria.ToListAsync());
         }
 
         // GET: Categorias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +64,15 @@ namespace futshop_dweb.Controllers
         // GET: Categorias/Create
         public IActionResult Create()
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -54,6 +81,15 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome")] Categoria categoria)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (ModelState.IsValid)
             {
                 // Verifica se já existe uma categoria com o mesmo nome
@@ -77,6 +113,15 @@ namespace futshop_dweb.Controllers
         // GET: Categorias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -95,6 +140,15 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome")] Categoria categoria)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id != categoria.Id)
             {
                 return NotFound();
@@ -126,6 +180,15 @@ namespace futshop_dweb.Controllers
         // GET: Categorias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -146,6 +209,15 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (Global.LoggedUser == null)
+            {
+                return RedirectToAction("Login", "Utilizadors");
+            }
+            else if (Global.LoggedUser.IsAdmin == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var categoria = await _context.Categoria.FindAsync(id);
             if (categoria != null)
             {
