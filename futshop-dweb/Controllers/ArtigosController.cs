@@ -70,11 +70,12 @@ namespace futshop_dweb.Controllers
         // GET: Artigos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            // Verifica se o id é nulo. Se for, retorna um resultado de 'NotFound'.
             if (id == null)
             {
                 return NotFound();
             }
-
+            // Busca o artigo com o id especificado, incluindo a categoria relacionada.
             var artigos = await _context.Artigos
                 .Include(a => a.Categoria)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -116,7 +117,7 @@ namespace futshop_dweb.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
+            // Remove as validações de 'Categoria' e 'Preco'.
             ModelState.Remove("Categoria");
             ModelState.Remove("Preco");
             if (ModelState.IsValid)
@@ -133,6 +134,8 @@ namespace futshop_dweb.Controllers
                     }
                     else
                     {
+
+                        // Adiciona um erro ao ModelState se 'PrecoAux' estiver vazio e retorna a visão com os dados atuais.
                         ModelState.AddModelError("", "O preço do artigo é inválido.");
                         ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
                         return View(artigos);
@@ -144,7 +147,7 @@ namespace futshop_dweb.Controllers
                     ViewData["CategoriaFK"] = new SelectList(_context.Categoria, "Id", "Nome", artigos.CategoriaFK);
                     return View(artigos);
                 }
-
+                // Gera um nome único para o arquivo e salva-o na pasta 'wwwroot/images'.
                 if (imageFile != null && imageFile.Length > 0)
                 {
                     string fileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
@@ -161,7 +164,7 @@ namespace futshop_dweb.Controllers
                 {
                     artigos.ImagemURL = "default-c.png";
                 }
-
+                // Adiciona o novo artigo ao context e salva as mudanças na base de dados.
                 _context.Artigos.Add(artigos);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -234,7 +237,7 @@ namespace futshop_dweb.Controllers
                 {
                     if (decimal.TryParse(artigos.PrecoAux, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal preco))
                     {
-                        // Converte PrecoAux em um valor decimal e armazena em um campo apropriado se necessário
+                  
                         existingArtigo.Preco = Convert.ToDouble(preco);
                     }
                     else

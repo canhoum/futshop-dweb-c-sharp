@@ -41,6 +41,7 @@ namespace DW_Final_Project.Models
 
         public string? ImagemURL { get; set; }
 
+        // Relação muitos-para-um com Categoria
         [ForeignKey(nameof(Categoria))]
         public int CategoriaFK { get; set; }
 

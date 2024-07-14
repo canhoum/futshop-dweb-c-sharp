@@ -233,11 +233,9 @@ namespace futshop_dweb.Controllers
                     return View();
                 }
                 else
-                {
-                    // Assuming you have some data you want to cache
+                {                
                     Global.LoggedUser = result;
                     bool isAuthenticated = _context.IsUserLoggedIn();
-                    // Armazenando informações na HttpContext.Items
                     HttpContext.Items["IsAuthenticated"] = isAuthenticated;
                     return RedirectToAction("Index", "Home");
                 }

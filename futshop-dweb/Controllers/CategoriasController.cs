@@ -98,7 +98,7 @@ namespace futshop_dweb.Controllers
 
                 if (existingCategoria != null)
                 {
-                    // Não deixa criar uma nova categoria caso já existe
+                    // Não deixa criar uma nova categoria caso já exista
                     ModelState.AddModelError("Nome", "Já existe uma categoria com esse nome.");
                     return View(categoria);
                 }

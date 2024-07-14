@@ -59,12 +59,12 @@ namespace futshop_dweb.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-         // Novo atributo para indicar se o utilizador é administrador
+         //atributo para indicar se o utilizador é administrador
         public bool IsAdmin { get; set; } = false;
 
         [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
-
+        //atributo para definir a maneira de enviar a data de nascimento
         [NotMapped]
         public string DataNascFormatted => DataNascimento.ToString("dd/MM/yyyy");
     }
