@@ -46,9 +46,23 @@
         <input asp-for="Pais" class="form-control" />
         <span asp-validation-for="Pais" class="text-danger"></span>
     </div>
+    @{
+        if (ViewBag.IsAdmin == true)
+        {
+            <!-- <div class="form-group">
+                <label asp-for="IsAdmin" class="control-label"></label>
+                <input type="checkbox" asp-for="IsAdmin" />
+                <span asp-validation-for="IsAdmin" class="text-danger"></span>
+            </div> -->
+            <label asp-for="IsAdmin" class="control-label">Administrador</label>
+            <input type="checkbox" id="IsAdmin" name="IsAdmin" asp-for="IsAdmin" />
+        }
+    }
+
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
+    
 </form>
 
 
