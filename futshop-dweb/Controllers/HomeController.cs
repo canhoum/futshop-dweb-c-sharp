@@ -1,6 +1,7 @@
 using futshop_dweb.Data;
 using futshop_dweb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace futshop_dweb.Controllers
@@ -9,17 +10,29 @@ namespace futshop_dweb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        private readonly ApplicationDbContext _context;
+
         private readonly IUserService _userService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context)
         {
             _logger = logger;
             _userService = userService;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            bool isAuthenticated = _userService.IsAuthenticated;
+            // Check if the cookie exists
+            var userIdentifier = Request.Cookies["UserAuthCookie"];
+
+            if (!string.IsNullOrEmpty(userIdentifier))
+            {
+                var result = await _context.Utilizadores.FirstOrDefaultAsync(m => m.UtilizadorId == Convert.ToInt32(userIdentifier));
+                Global.LoggedUser = result;
+                bool isAuthenticated = _userService.IsAuthenticated;
+            }
+
             return View();
         }
 
