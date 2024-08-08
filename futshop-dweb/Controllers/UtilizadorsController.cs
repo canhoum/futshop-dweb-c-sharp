@@ -77,15 +77,17 @@ namespace futshop_dweb.Controllers
 
 
         // GET: Utilizadors/Create
+        [HttpGet]
         public IActionResult Create()
         {
-            return RedirectToAction("Index", "Home");
+            ViewBag.IsAdmin = Global.LoggedUser.IsAdmin;
+            return View();
         }
 
         // POST: Utilizadors/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UtilizadorId,Nome,Telemovel,DataNascimento,Email,Password,morada,codigopostal,Cidade,Pais")] Utilizador utilizador)
+        public async Task<IActionResult> Create([Bind("UtilizadorId,Nome,Telemovel,DataNascimento,Email,Password,morada,codigopostal,Cidade,Pais,IsAdmin")] Utilizador utilizador)
         {
             ModelState.Remove("Carrinho");
             if (ModelState.IsValid)
@@ -241,6 +243,7 @@ namespace futshop_dweb.Controllers
             ModelState.Remove("Carrinho");
             if (ModelState.IsValid)
             {
+
                 var result = await _context.Utilizadores.FirstOrDefaultAsync(m => m.Email == model.Email);
                 if (result == null)
                 {
