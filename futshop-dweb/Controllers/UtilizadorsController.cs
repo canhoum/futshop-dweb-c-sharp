@@ -8,6 +8,7 @@ using futshop_dweb.Models;
 using RestSharp;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
+
 namespace futshop_dweb.Controllers
 {
     public class UtilizadorsController : Controller
@@ -241,6 +242,12 @@ namespace futshop_dweb.Controllers
             ModelState.Remove("Carrinho");
             if (ModelState.IsValid)
             {
+<<<<<<< Updated upstream
+=======
+
+                
+                
+>>>>>>> Stashed changes
                 var result = await _context.Utilizadores.FirstOrDefaultAsync(m => m.Email == model.Email);
                 if (result == null)
                 {
@@ -255,6 +262,20 @@ namespace futshop_dweb.Controllers
                 else
                 {                
                     Global.LoggedUser = result;
+                    if (model.RememberMe)
+                    {
+                        var cookieOptions = new CookieOptions
+                        {
+                            Expires = DateTime.Now.AddDays(30), // Set expiration time for the cookie
+                            Secure = true, // Use HTTPS
+                            HttpOnly = true, // Cookie is not accessible via JavaScript
+                            SameSite = SameSiteMode.Strict // Cookie is sent only in first-party contexts
+                        };
+
+                        // Store the user identifier in the cookie (replace with your own logic)
+                        Response.Cookies.Append("UserAuthCookie",Global.LoggedUser.UtilizadorId.ToString(), cookieOptions);
+
+                    }
                     bool isAuthenticated = _context.IsUserLoggedIn();
                     HttpContext.Items["IsAuthenticated"] = isAuthenticated;
                     return RedirectToAction("Index", "Home");
