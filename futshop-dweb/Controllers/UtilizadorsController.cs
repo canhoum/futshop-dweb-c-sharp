@@ -243,7 +243,6 @@ namespace futshop_dweb.Controllers
             ModelState.Remove("Carrinho");
             if (ModelState.IsValid)
             {
-
                 var result = await _context.Utilizadores.FirstOrDefaultAsync(m => m.Email == model.Email);
                 if (result == null)
                 {
@@ -270,6 +269,8 @@ namespace futshop_dweb.Controllers
         public IActionResult Logout()
         {
             Global.LoggedUser = null;
+            // Remove the cookie by setting its expiration date to a past date
+            Response.Cookies.Delete("UserAuthCookie");
             return RedirectToAction("Index", "Home");
         }
     }
