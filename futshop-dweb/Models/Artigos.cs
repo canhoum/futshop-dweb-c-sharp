@@ -5,11 +5,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DW_Final_Project.Models
 {
+    /// <summary>
+    /// classe representativa de um artigo
+    /// </summary>
     public class Artigos
     {
+        /// <summary>
+        /// identificador unico do artigo
+        /// </summary>
         [Key]
         public int Id { get; set; }
 
+        /// <summary>
+        /// nome do artigo 
+        /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [RegularExpression("^[a-zçãõáéíóúA-ZÇÃÕÁÉÍÓÚ -]+$", ErrorMessage = "Tem de escrever um {0} válido")]
         [Display(Name = "Nome")]

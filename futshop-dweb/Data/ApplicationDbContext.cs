@@ -40,6 +40,14 @@ namespace futshop_dweb.Data
             new Categoria { Id = 9, Nome = "África" }
 
         );
+
+         modelBuilder.Entity<Artigos>().HasData(
+             new Artigos { Id = 1, Nome = "Camisola Benfica" , Descricao = "Camisola do Benfica Oficial" , Tamanho = "M" , Quantidade= 10 , Preco=20 , ImagemURL = "" , CategoriaFK = 1},
+             new Artigos { Id = 2, Nome = "Camisola Manchester City", Descricao = "Camisola do Manchester City Oficial", Tamanho = "L", Quantidade = 20, Preco = 22, ImagemURL = "", CategoriaFK = 2 },
+             new Artigos { Id = 3, Nome = "Camisola Real Madrid", Descricao = "Camisola do Real Madrid Oficial", Tamanho = "L", Quantidade = 50, Preco = 18, ImagemURL = "", CategoriaFK = 3 },
+             new Artigos { Id = 4, Nome = "Camisola Benfica Retro", Descricao = "Camisola do Benfica Retro Oficial", Tamanho = "S", Quantidade = 19, Preco = 50, ImagemURL = "", CategoriaFK = 4 }
+             );
+
     }
 
         public bool IsUserLoggedIn()
