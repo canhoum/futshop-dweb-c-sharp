@@ -21,6 +21,13 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Utilizadors
+        /// <summary>
+        /// Método responsável por exibir a lista de utilizadores. 
+        /// Redireciona para a página de login se o utilizador não estiver logado, 
+        /// ou para a página inicial se o utilizador logado não for administrador.
+        /// </summary>
+        /// <returns>Retorna a View "Index" com a lista de utilizadores, ou redireciona para a View "Login" se o utilizador não estiver logado,
+        /// ou para a View "Home/Index" se o utilizador não for administrador.</returns>
         public async Task<IActionResult> Index()
         {
             if (Global.LoggedUser == null)
@@ -36,6 +43,11 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Utilizadors/Details/5
+        /// <summary>
+        /// Método responsável por exibir os detalhes de um utilizador específico.
+        /// </summary>
+        /// <param name="id">O identificador único do utilizador cujos detalhes serão exibidos.</param>
+        /// <returns>Retorna a View com os detalhes do utilizador, ou "NotFound" se o utilizador não for encontrado.</returns>
         public async Task<IActionResult> Details(int? id)
         {
 
@@ -78,6 +90,10 @@ namespace futshop_dweb.Controllers
 
 
         // GET: Utilizadors/Create
+        /// <summary>
+        ///  Método responsável por exibir a View de criação de um novo utilizador.
+        /// </summary>
+        /// <returns>Retorna a View "Create" com informações adicionais no ViewBag, como o status de administrador do utilizador logado.</returns>
         [HttpGet]
         public IActionResult Create()
         {
@@ -86,6 +102,12 @@ namespace futshop_dweb.Controllers
         }
 
         // POST: Utilizadors/Create
+        /// <summary>
+        /// Método responsável por processar a criação de um novo utilizador.
+        /// </summary>
+        /// <param name="utilizador">Objeto que contém os dados do novo utilizador a ser criado.</param>
+        /// <returns>Redireciona para a View "Index" em caso de sucesso, ou para a página inicial ("Home/Index") 
+        /// em caso de falha na validação do modelo.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UtilizadorId,Nome,Telemovel,DataNascimento,Email,Password,morada,codigopostal,Cidade,Pais,IsAdmin")] Utilizador utilizador)
@@ -101,6 +123,11 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Utilizadors/Edit/5
+        /// <summary>
+        ///  Método responsável por exibir a View de edição de um utilizador específico.
+        /// </summary>
+        /// <param name="id">O identificador único do utilizador a ser editado.</param>
+        /// <returns>Retorna a View com os detalhes do utilizador para edição, ou "NotFound" se o utilizador não for encontrado.</returns>
         public async Task<IActionResult> Edit(int? id)
         {
             
@@ -114,6 +141,13 @@ namespace futshop_dweb.Controllers
         }
 
         // POST: Utilizadors/Edit/5
+        /// <summary>
+        /// Método responsável por processar a edição de um utilizador existente.
+        /// </summary>
+        /// <param name="id">O identificador único do utilizador a ser editado.</param>
+        /// <param name="utilizador"> Objeto que contém os dados atualizados do utilizador.</param>
+        /// <returns>Redireciona para a View "Index" em caso de sucesso, ou retorna a View "Edit" com o modelo atual 
+        /// caso ocorra alguma falha na validação ou na atualização.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UtilizadorId,Nome,Telemovel,DataNascimento,Email,morada,codigopostal,Cidade,Pais")] Utilizador utilizador)
@@ -143,6 +177,12 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Utilizadors/Delete/5
+        /// <summary>
+        /// Método responsável por exibir a View de confirmação para exclusão de um utilizador específico.
+        /// </summary>
+        /// <param name="id">O identificador único do utilizador a ser excluído.</param>
+        /// <returns>Retorna a View com os detalhes do utilizador para confirmação da exclusão, 
+        /// ou "NotFound" se o utilizador não for encontrado.</returns>
         public async Task<IActionResult> Delete(int? id)
         {
             
@@ -162,6 +202,12 @@ namespace futshop_dweb.Controllers
         }
 
         // POST: Utilizadors/Delete/5
+
+        /// <summary>
+        /// Método responsável por confirmar e realizar a exclusão de um utilizador.
+        /// </summary>
+        /// <param name="id">O identificador único do utilizador a ser excluído.</param>
+        /// <returns> Redireciona para a View "Index" após a exclusão do utilizador.</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -183,53 +229,34 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Utilizadors/Register
+        /// <summary>
+        ///  Método responsável por exibir a View de registro de um novo utilizador.
+        /// </summary>
+        /// <returns>Retorna a View "Create" para o registro de um novo utilizador.</returns>
         [HttpGet]
         public IActionResult Register()
         {
             return View("Create");
         }
 
-        // POST: Utilizadors/Register
-        // [HttpPost]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> Register([Bind("Nome,Telemovel,DataNascimento,Email,morada,codigopostal,Cidade,Pais,Password")] Utilizador model)
-        // {
-        //     if (ModelState.IsValid)
-        //     {
-        //         var user = new Utilizador
-        //         {
-
-        //             Email = model.Email,
-        //             Nome = model.Nome,
-        //             Telemovel = model.Telemovel,
-        //             DataNascimento = model.DataNascimento,
-        //             morada = model.morada,
-        //             codigopostal = model.codigopostal,
-        //             Cidade = model.Cidade,
-        //             Pais = model.Pais
-        //         };
-        //         var result = await _userManager.CreateAsync(user, model.Password);
-        //         if (result.Succeeded)
-        //         {
-        //             await _signInManager.SignInAsync(user, isPersistent: false);
-        //             return RedirectToAction("Index", "Home");
-        //         }
-        //         foreach (var error in result.Errors)
-        //         {
-        //             ModelState.AddModelError(string.Empty, error.Description);
-        //         }
-        //     }
-        //     return View(model);
-        // }
-
         // GET: Utilizadors/Login
+        /// <summary>
+        ///  Método responsável por exibir a View de login.
+        /// </summary>
+        /// <returns>Retorna a View "Login" para que o utilizador possa autenticar-se.</returns>
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // // POST: Utilizadors/Login
+
+        //POST: Utilizadors/Login
+        /// <summary>
+        /// Método responsavel pelo Login.
+        /// </summary>
+        /// <param name="model">Objeto representativo de um utilizador passado na View</param>
+        /// <returns>Retorna a View "Index" em caso de sucesso, ou, "Login" em caso de insucesso</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("Email,Password,RememberMe")] Utilizador model)
@@ -280,6 +307,10 @@ namespace futshop_dweb.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Método responsável por processar o logout do utilizador atual.
+        /// </summary>
+        /// <returns>Redireciona para a View "Index" do controller "Home" após limpar a sessão do utilizador e remover o cookie de autenticação.</returns>
         [HttpGet]
         public IActionResult Logout()
         {
