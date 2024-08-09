@@ -20,6 +20,10 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Transacao_Artigo
+        /// <summary>
+        /// Exibe uma lista de todas as transações de artigos.
+        /// </summary>
+        /// <returns>Retorna a View com a lista de transações de artigos.</returns>
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Transacao_Artigo.Include(t => t.Transacao);
@@ -27,6 +31,11 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Transacao_Artigo/Details/5
+        /// <summary>
+        /// Exibe os detalhes de uma transação de artigo específica.
+        /// </summary>
+        /// <param name="id">O identificador da transação de artigo a ser exibida.</param>
+        /// <returns>Retorna a View com os detalhes da transação de artigo, ou uma página de erro se não for encontrado.</returns>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +55,10 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Transacao_Artigo/Create
+        /// <summary>
+        /// Exibe o formulário para criar uma nova transação de artigo.
+        /// </summary>
+        /// <returns>Retorna a View com o formulário de criação de uma transação de artigo.</returns>
         public IActionResult Create()
         {
             ViewData["TransacaoFK"] = new SelectList(_context.Transacao, "CompraId", "CompraId");
@@ -53,8 +66,12 @@ namespace futshop_dweb.Controllers
         }
 
         // POST: Transacao_Artigo/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        ///  Processa a submissão do formulário de criação de uma nova transação de artigo.
+        /// </summary>
+        /// <param name="transacao_Artigo">Objeto contendo os dados da transação de artigo a ser criada.</param>
+        /// <returns>Redireciona para a ação Index se a criação for bem-sucedida; caso contrário, retorna a View com os dados atuais.</returns>
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TransacaoFK,ArtigoFK")] Transacao_Artigo transacao_Artigo)
@@ -70,6 +87,11 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Transacao_Artigo/Edit/5
+        /// <summary>
+        /// Exibe a interface de edição para uma transação de artigo específica.
+        /// </summary>
+        /// <param name="id">O identificador único da transação de artigo a ser editada.</param>
+        /// <returns>Retorna a View de edição com os dados da transação de artigo; se o id for nulo ou a transação não for encontrada, retorna NotFound.</returns>
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,8 +109,13 @@ namespace futshop_dweb.Controllers
         }
 
         // POST: Transacao_Artigo/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Processa a solicitação de edição de uma transação de artigo específica.
+        /// </summary>
+        /// <param name="id">O identificador único da transação de artigo a ser editada.</param>
+        /// <param name="transacao_Artigo">O objeto Transacao_Artigo atualizado enviado pelo formulário.</param>
+        /// <returns>Redireciona para a lista de transações de artigo se a atualização for bem-sucedida; 
+        /// caso contrário, retorna a View de edição com os dados atuais e mensagens de erro, se houver.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TransacaoFK,ArtigoFK")] Transacao_Artigo transacao_Artigo)
@@ -123,6 +150,12 @@ namespace futshop_dweb.Controllers
         }
 
         // GET: Transacao_Artigo/Delete/5
+        /// <summary>
+        /// Exibe a página de confirmação para a exclusão de uma transação de artigo específica.
+        /// </summary>
+        /// <param name="id">O identificador único da transação de artigo a ser excluída.</param>
+        /// <returns> Retorna a View de exclusão com os detalhes da transação de artigo se o id for válido e o objeto existir;
+        /// caso contrário, retorna um erro de "Não encontrado"</returns>
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,6 +175,12 @@ namespace futshop_dweb.Controllers
         }
 
         // POST: Transacao_Artigo/Delete/5
+        /// <summary>
+        /// Executa a exclusão da transação de artigo especificada após a confirmação do usuário.
+        /// </summary>
+        /// <param name="id">O identificador único da transação de artigo a ser excluída.</param>
+        /// <returns>Redireciona para a ação Index após a exclusão bem-sucedida ou 
+        /// caso a transação de artigo não seja encontrada.</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -156,6 +195,11 @@ namespace futshop_dweb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Verifica se existe uma transação de artigo com o ID especificado.
+        /// </summary>
+        /// <param name="id">O identificador único da transação de artigo.</param>
+        /// <returns>Retorna true se a transação de artigo existir; caso contrário, false.</returns>
         private bool Transacao_ArtigoExists(int id)
         {
             return _context.Transacao_Artigo.Any(e => e.Id == id);
