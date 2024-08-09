@@ -14,6 +14,12 @@ namespace futshop_dweb.Controllers
 
         private readonly IUserService _userService;
 
+        /// <summary>
+        /// Inicializa o <see cref="HomeController"/> com os serviços necessários.
+        /// </summary>
+        /// <param name="logger">Serviço de log para registrar eventos.</param>
+        /// <param name="userService">Serviço para operações relacionadas a usuários.</param>
+        /// <param name="context">Contexto de dados para acesso ao banco de dados.</param>
         public HomeController(ILogger<HomeController> logger, IUserService userService, ApplicationDbContext context)
         {
             _logger = logger;
@@ -21,6 +27,10 @@ namespace futshop_dweb.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Exibe a página inicial. Verifica se o usuário está autenticado com base no cookie de autenticação.
+        /// </summary>
+        /// <returns>Retorna a View correspondente à página inicial.</returns>
         public async Task<IActionResult> IndexAsync()
         {
             // Check if the cookie exists
@@ -36,16 +46,29 @@ namespace futshop_dweb.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Exibe a página de privacidade.
+        /// </summary>
+        /// <returns>Retorna a View da página de privacidade.</returns>
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Exibe a página de erro com informações sobre o request.
+        /// </summary>
+        /// <returns>Retorna a View da página de erro com o identificador do request.</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        /// <summary>
+        /// Exibe a página de informações.
+        /// </summary>
+        /// <returns>Retorna a View da página de informações.</returns>
         public IActionResult Info()
         {
             bool isAuthenticated = _userService.IsAuthenticated;
