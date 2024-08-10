@@ -8,10 +8,14 @@ namespace futshop_dweb.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
+        /// <summary>
+        /// objeto de referencia á BD
+        /// </summary>
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// objeto de referencia á interface de serviços da aplicação
+        /// </summary>
         private readonly IUserService _userService;
 
         /// <summary>
