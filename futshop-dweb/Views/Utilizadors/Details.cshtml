@@ -68,6 +68,9 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.UtilizadorId" class="btn btn-secondary">Editar</a> 
-    <a asp-action="Index" class="btn btn-danger">Voltar à lista</a> |
+    @if (ViewBag.IsAdmin)
+    {
+        <a asp-action="Index" class="btn btn-danger">Lista de Utilizadores</a>
+    }
     <a asp-controller="Transacaos" asp-action="TransacoesPorUtilizador" asp-route-id="@Model.UtilizadorId" class="btn btn-info">Ver Transações</a>
 </div>
