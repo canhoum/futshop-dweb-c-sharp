@@ -29,6 +29,10 @@ namespace futshop_dweb.Models
              ErrorMessage = "o {0} só aceita 9 digitos")]
         public string Telemovel { get; set; }
 
+
+        /// <summary>
+        /// data de nascimento do utilizador
+        /// </summary>
         [Required(ErrorMessage = "A {0} é de preenchimento obrigatório")]
         [Display(Name = "Data de Nascimento")]
         public DateOnly DataNascimento { get; set; }

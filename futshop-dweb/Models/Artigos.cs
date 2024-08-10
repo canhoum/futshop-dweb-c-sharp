@@ -45,6 +45,9 @@ namespace DW_Final_Project.Models
         [RegularExpression("[0-9]+[.,]?[0-9]{1,2}", ErrorMessage = "No {0} só pode usar algarismos, e se desejar, duas casas decimais no final.")]
         public double Preco { get; set; }
         
+        /// <summary>
+        /// variavel auxiliar para conversão do preço de string para double
+        /// </summary>
         [NotMapped]
         public string PrecoAux { get; set; }
 

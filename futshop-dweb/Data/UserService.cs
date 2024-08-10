@@ -5,15 +5,11 @@
     using Microsoft.AspNetCore.Http;
     using System.Security.Claims;
 
+    /// <summary>
+    /// Objeto com serviços de controlo da aplicação
+    /// </summary>
     public class UserService : IUserService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public UserService(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         public bool IsAuthenticated => Global.LoggedUser != null;
 
         public bool IsAdmin => Global.LoggedUser != null && Global.LoggedUser.IsAdmin ==true;
@@ -21,6 +17,7 @@
         public bool addedToCart => Global.addedToCart == true;
 
         public bool finishedOrder => Global.finishedOrder == true;
+        public bool noItems => Global.Carrinho.Count == 0;
 
         public void resetFinishedOrder()
         {

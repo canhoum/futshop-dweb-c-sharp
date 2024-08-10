@@ -36,6 +36,7 @@ public class TransacaosController : Controller
         {
             return NotFound();
         }
+        ViewBag.UtilizadorId = id;
         //Verifica as transações feitas pelo utilizador, s
         var transacao_artigo = await _context.Transacao_Artigo
             .Include(t => t.Artigo)
@@ -208,16 +209,16 @@ public class TransacaosController : Controller
         {
             return NotFound();
         }
-
+        ViewBag.UtilizadorId = id;
         var transacoes = await _context.Transacao
             .Include(t => t.Utilizador)
             .Where(t => t.UtilizadorFK == id)
             .ToListAsync();
 
-        if (transacoes == null || transacoes.Count == 0)
-        {
-            return NotFound();
-        }
+        // if (transacoes == null || transacoes.Count == 0)
+        // {
+        //     return NotFound();
+        // }
 
         return View("Index",transacoes);
     }
@@ -229,6 +230,10 @@ public class TransacaosController : Controller
     public async Task<IActionResult> FinalizarCompra()
     {
         decimal total = 0;
+        if (Global.Carrinho.Count == 0)
+        {
+            return RedirectToAction("Carrinho","Artigos");
+        }
         foreach (var item in Global.Carrinho)
         {
             total += Convert.ToDecimal(item.Artigo.Preco) * item.Quantidade;

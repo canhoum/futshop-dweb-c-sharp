@@ -33,3 +33,6 @@
     <p>Total: @Model.First().Transacao.Total</p>
     <p> Data de Compra: @Model.First().Transacao.DataCompra</p>
 </table>
+<div class="text-center">
+    <a asp-action="TransacoesPorUtilizador" asp-route-id="@ViewBag.UtilizadorId">Voltar</a>
+</div>

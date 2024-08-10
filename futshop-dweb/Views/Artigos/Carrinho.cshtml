@@ -14,6 +14,11 @@
             Compra realizada com sucesso. Obrigado pela sua encomenda!
         </div>
         UserService.resetFinishedOrder();
+    }else if (UserService.noItems)
+    {
+        <div class="alert alert-danger" role="alert">
+            O teu carrinho está vazio. Não podes finalizar a compra.
+        </div>
     }
 }
 @if (Model == null || !Model.Any())
