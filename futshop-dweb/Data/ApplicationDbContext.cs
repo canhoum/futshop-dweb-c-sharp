@@ -47,7 +47,6 @@ namespace futshop_dweb.Data
              new Artigos { Id = 3, Nome = "Camisola Real Madrid", Descricao = "Camisola do Real Madrid Oficial", Tamanho = "L", Quantidade = 50, Preco = 18, ImagemURL = "", CategoriaFK = 3 },
              new Artigos { Id = 4, Nome = "Camisola Benfica Retro", Descricao = "Camisola do Benfica Retro Oficial", Tamanho = "S", Quantidade = 19, Preco = 50, ImagemURL = "", CategoriaFK = 4 }
              );
-
     }
 
         public bool IsUserLoggedIn()

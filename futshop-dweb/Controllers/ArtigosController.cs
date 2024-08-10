@@ -190,8 +190,6 @@ namespace futshop_dweb.Controllers
             ModelState.Remove("Preco");
             if (ModelState.IsValid)
             {
-                
-
                 if (!string.IsNullOrEmpty(artigos.PrecoAux))
                 {
                     
@@ -308,6 +306,7 @@ namespace futshop_dweb.Controllers
 
             ModelState.Remove("Categoria");
             ModelState.Remove("Preco");
+            ModelState.Remove("imageFile");
             if (id != artigos.Id)
             {
                 return NotFound();
