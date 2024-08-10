@@ -62,7 +62,7 @@ namespace futshop_dweb.Controllers
             {
                 return NotFound();
             }
-            ViewBag.IsAdmin = utilizador.IsAdmin;
+            ViewBag.IsAdmin = Global.LoggedUser.IsAdmin;
 
             return View(utilizador);
 
@@ -152,12 +152,28 @@ namespace futshop_dweb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UtilizadorId,Nome,Telemovel,DataNascimento,Email,morada,codigopostal,Cidade,Pais")] Utilizador utilizador)
         {
-            
+            ModelState.Remove("Password");
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(utilizador);
+                    var existingUtilizador = await _context.Utilizadores.FindAsync(id);
+                    string pwd = existingUtilizador.Password;
+
+                    // Update the fields you want to change
+                    existingUtilizador.Nome = utilizador.Nome;
+                    existingUtilizador.Telemovel = utilizador.Telemovel;
+                    existingUtilizador.DataNascimento = utilizador.DataNascimento;
+                    existingUtilizador.Email = utilizador.Email;
+                    existingUtilizador.morada = utilizador.morada;
+                    existingUtilizador.codigopostal = utilizador.codigopostal;
+                    existingUtilizador.Cidade = utilizador.Cidade;
+                    existingUtilizador.Pais = utilizador.Pais;
+
+                    // Reassign the preserved password
+                    existingUtilizador.Password = pwd;
+
+                    _context.Update(existingUtilizador);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -171,7 +187,7 @@ namespace futshop_dweb.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("VerPerfil", new { id = utilizador.UtilizadorId });
             }
             return View(utilizador);
         }
